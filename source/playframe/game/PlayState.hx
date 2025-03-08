@@ -137,12 +137,14 @@ class PlayState extends FlxState
 		for(i in lifeCounter.lives){
 			i.color = gameColor.getLightened(.2);
 		}
+		
+		lifeCounter.namePlate.color = gameColor.getLightened(.2);
 	}
 	
 	/**
 	 * the function that gets ran when a beat is hit
 	 */
 	function beatHit():Void{
-		lifeCounter.beatHit(1);
+		lifeCounter.beatHit(BeatManager.globalCurBeat);
 	}
 }

@@ -16,6 +16,11 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
     public var lives:Array<FlxSprite> = [];
     
     /**
+     * the sprite that displays your characters name
+     */
+    public var namePlate:FlxSprite;
+    
+    /**
      * How big the lives are supposed to be
      */
     var ogLiveSize:Float = 0;
@@ -40,6 +45,8 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
      */
     var liveScaleTweens:Array<FlxTween> = [];
         
+    var namePlateTween:FlxTween;
+
     public function new():Void{
         super();
         
@@ -81,6 +88,13 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         for(i in lives){
             i.x += 100;
         }
+        
+        namePlate = new FlxSprite().loadGraphic('assets/images/nameplates/'+ PlayState.curAvatar  + '.png');
+        namePlate.setGraphicSize(Std.int(namePlate.width * .6));
+        namePlate.updateHitbox();
+        namePlate.y = 15;
+        namePlate.x = (FlxG.width - namePlate.width) - 62;
+        add(namePlate);
     }
     
     override function update(elapsed:Float):Void{
@@ -123,6 +137,14 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         portratScaleTween = FlxTween.tween(portrait.scale, {x: ogPortraitSize, y:ogPortraitSize}, 1, {ease: FlxEase.quartOut});   
         
         updatePortraitPos();
+        
+        if(namePlateTween != null && namePlateTween.active){
+            namePlateTween.cancel();
+            namePlateTween.destroy();
+        }
+        
+        namePlate.angle = (curBeat % 2 == 0 ? -10 : 10);
+        namePlateTween = FlxTween.tween(namePlate, {angle: 0}, 1, {ease: FlxEase.quartOut});   
     }
     
     override function destroy():Void{
