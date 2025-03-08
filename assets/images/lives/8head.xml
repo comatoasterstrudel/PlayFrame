@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="8head.png">
+<SubTexture name="good0000" x="0" y="0" width="547" height="592" frameX="-109" frameY="-86" frameWidth="768" frameHeight="768" />
+<SubTexture name="bad0000" x="547" y="0" width="597" height="592" frameX="-100" frameY="-86" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

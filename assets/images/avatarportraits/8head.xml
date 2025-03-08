@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="8head.png">
+<SubTexture name="hp40000" x="0" y="0" width="406" height="729" frameX="-204" frameY="-43" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp30000" x="406" y="0" width="406" height="729" frameX="-204" frameY="-43" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp20000" x="812" y="0" width="406" height="729" frameX="-204" frameY="-43" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp10000" x="1218" y="0" width="596" height="729" frameX="-58" frameY="-43" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

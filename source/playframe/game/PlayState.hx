@@ -66,7 +66,7 @@ class PlayState extends FlxState
 	/**
 	 * which avatar the player is using
 	 */
-	public static var curAvatar:String = 'hexie';
+	public static var curAvatar:String = '8head';
 	
 	/**
 	 * how many lives you can have
