@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="hexie.png">
+<SubTexture name="good0000" x="0" y="0" width="657" height="621" frameX="-39" frameY="-81" frameWidth="768" frameHeight="768" />
+<SubTexture name="bad0000" x="657" y="0" width="657" height="621" frameX="-39" frameY="-81" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

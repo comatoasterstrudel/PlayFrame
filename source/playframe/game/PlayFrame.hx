@@ -13,14 +13,18 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     /**
      * how wide the frames should be
      */
-    public static final frameWidth:Int = 460;
+    public static final frameWidth:Int = 900;
     
+    /**
+     * how wide the gaps between the top anbd bottom should be
+     */
+    public static final frameMargin:Int = 20;
+     
     public function new(positionOffset:Float){
         super();
         
-        frameCamera = new FlxCamera((FlxG.width / 2 - frameWidth / 2) + positionOffset, PlayState.scoreBgHeight, frameWidth, FlxG.height - PlayState.scoreBgHeight);
+        frameCamera = new FlxCamera((FlxG.width / 2 - frameWidth / 2) + positionOffset, PlayState.scoreBgHeight + frameMargin, frameWidth, (FlxG.height - PlayState.scoreBgHeight) - (frameMargin * 2));
 		frameCamera.bgColor = FlxColor.BLACK;
-		//frameCamera.bgColor.alpha = 0;
 		FlxG.cameras.add(frameCamera, false);
         
         var thing = new FlxTypedGroup<FlxSprite>();
@@ -36,4 +40,4 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         super.add(basic);
         return basic;
     }
-}
+} 

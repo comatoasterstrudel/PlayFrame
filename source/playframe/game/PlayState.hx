@@ -1,5 +1,7 @@
 package playframe.game;
 
+import flixel.tweens.misc.ColorTween;
+
 /**
  * the state with the game!! duhh
  * starting 3/7/2025 i hope i dont die making this
@@ -14,7 +16,7 @@ class PlayState extends FlxState
 	/**
 	 * how tall the scorebg should be
 	 */
-	public static final scoreBgHeight:Int = 120;
+	public static final scoreBgHeight:Int = 155;
 	
 	/**
 	 * the scrolling bg
@@ -22,19 +24,44 @@ class PlayState extends FlxState
 	var bg:FlxBackdrop;
 	
 	/**
-	 * the tween that changes the color of the bg tiles
+	 * the frame with the game!!
 	 */
-	var bgColorTween:FlxTween;
+	var playFrame:PlayFrame;
 	
 	/**
-	 * the tween that changes the color of the score
+	 * the life counter and portrait art
 	 */
-	var scoreColorTween:FlxTween;
+	var lifeCounter:LifeCounter;
+	
+	/**
+	 * the tween that changes the color of the game
+	 */
+	var colorTween:ColorTween;
 	 
+	/**
+	 * the color of the game, currently
+	 */
+	var gameColor:FlxColor;
+	
+	/**
+	 * which avatar the player is using
+	 */
+	public static var curAvatar:String = 'gerbo';
+	
+	/**
+	 * how many lives you can have
+	 */
+	public static var maxLives:Int = 4;
+	
+	/**
+	 * the class that handles the bpm and such
+	 */
+	var beatManager:BeatManager;
+	
 	override public function create()
-	{		
+	{		 
 		super.create();
-				
+		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
         bg.velocity.set(10, 10);
         add(bg);
@@ -44,14 +71,24 @@ class PlayState extends FlxState
 		scoreBg = new FlxSprite().makeGraphic(FlxG.width, scoreBgHeight, 0xFF919191);
 		add(scoreBg);
 		
+		lifeCounter = new LifeCounter();
+		add(lifeCounter);
+		
 		changeBgColor(FlxColor.WHITE, 0.001);
 		
-		addFrames();
+		playFrame = new PlayFrame(0);
+		add(playFrame);
+		
+		FlxG.sound.playMusic('assets/music/play.ogg', .3, true);
+		
+		beatManager = new BeatManager(90, beatHit);
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		
+		beatManager.update(elapsed);
 		
 		if(FlxG.keys.justReleased.LEFT){
 			changeBgColor(FlxColor.RED, 2);
@@ -66,19 +103,10 @@ class PlayState extends FlxState
 		}
 		
 		if(FlxG.keys.justReleased.UP){
-			changeBgColor(FlxColor.YELLOW, 2);
+			changeBgColor(FlxColor.PURPLE, 2);
 		}
-	}
-	
-	/**
-	 * call this to add the play frames
-	 */
-	function addFrames():Void{
-		var frame1 = new PlayFrame(-300);
-		add(frame1);
 		
-		var frame2 = new PlayFrame(300);
-		add(frame2);
+		updateColors();
 	}
 	
 	/**
@@ -86,18 +114,35 @@ class PlayState extends FlxState
 	 * @param color the color to switch to
 	 */
 	function changeBgColor(color:FlxColor, time:Float):Void{
-		if(bgColorTween != null && bgColorTween.active){
-			bgColorTween.cancel();
-			bgColorTween.destroy();
+		if(colorTween != null && colorTween.active){
+			colorTween.cancel();
+			colorTween.destroy();
 		}
 		
-		bgColorTween = FlxTween.color(bg, time, bg.color, color);
-
-		if(scoreColorTween != null && scoreColorTween.active){
-			scoreColorTween.cancel();
-			scoreColorTween.destroy();
+		colorTween = FlxTween.color(null, time, gameColor, color);
+		
+		updateColors();
+	}
+	
+	function updateColors():Void{
+		if(colorTween != null){
+			gameColor = colorTween.color;
 		}
 		
-		scoreColorTween = FlxTween.color(scoreBg, time, scoreBg.color, color.getDarkened(.2));
+		bg.color = gameColor;
+		scoreBg.color = gameColor.getDarkened(.2);	
+		
+		lifeCounter.portrait.color = gameColor.getLightened(.2);
+		
+		for(i in lifeCounter.lives){
+			i.color = gameColor.getLightened(.2);
+		}
+	}
+	
+	/**
+	 * the function that gets ran when a beat is hit
+	 */
+	function beatHit():Void{
+		lifeCounter.beatHit(1);
 	}
 }

@@ -7,6 +7,6 @@ class Main extends Sprite
 		super();
 		addChild(new FlxGame(0, 0, PlayState));
 		
-		openfl.ui.Mouse.hide();
+		FlxG.mouse.visible = false;
 	}
 }

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="gerbo.png">
+<SubTexture name="hp40000" x="0" y="0" width="480" height="734" frameX="-91" frameY="-38" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp30000" x="480" y="0" width="480" height="734" frameX="-91" frameY="-38" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp20000" x="960" y="0" width="480" height="734" frameX="-91" frameY="-38" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp10000" x="1440" y="0" width="592" height="734" frameX="-58" frameY="-38" frameWidth="768" frameHeight="768" />
+</TextureAtlas>
