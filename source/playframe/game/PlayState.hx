@@ -1,11 +1,9 @@
-package;
-
-import flixel.FlxState;
+package playframe.game;
 
 class PlayState extends FlxState
 {
 	override public function create()
-	{
+	{		
 		super.create();
 	}
 
