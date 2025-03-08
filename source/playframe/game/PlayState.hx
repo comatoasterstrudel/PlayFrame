@@ -21,6 +21,16 @@ class PlayState extends FlxState
 	 */
 	var bg:FlxBackdrop;
 	
+	/**
+	 * the tween that changes the color of the bg tiles
+	 */
+	var bgColorTween:FlxTween;
+	
+	/**
+	 * the tween that changes the color of the score
+	 */
+	var scoreColorTween:FlxTween;
+	 
 	override public function create()
 	{		
 		super.create();
@@ -31,8 +41,10 @@ class PlayState extends FlxState
 		
 		bgColor = FlxColor.WHITE;
 		
-		scoreBg = new FlxSprite().makeGraphic(FlxG.width, scoreBgHeight, 0xFF734747);
+		scoreBg = new FlxSprite().makeGraphic(FlxG.width, scoreBgHeight, 0xFF919191);
 		add(scoreBg);
+		
+		changeBgColor(FlxColor.WHITE, 0.001);
 		
 		addFrames();
 	}
@@ -40,6 +52,22 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		
+		if(FlxG.keys.justReleased.LEFT){
+			changeBgColor(FlxColor.RED, 2);
+		}
+		
+		if(FlxG.keys.justReleased.RIGHT){
+			changeBgColor(FlxColor.GREEN, 2);
+		}
+		
+		if(FlxG.keys.justReleased.DOWN){
+			changeBgColor(FlxColor.BLUE, 2);
+		}
+		
+		if(FlxG.keys.justReleased.UP){
+			changeBgColor(FlxColor.YELLOW, 2);
+		}
 	}
 	
 	/**
@@ -51,5 +79,25 @@ class PlayState extends FlxState
 		
 		var frame2 = new PlayFrame(300);
 		add(frame2);
+	}
+	
+	/**
+	 * call this to slowly fade the bg color to a new color!!
+	 * @param color the color to switch to
+	 */
+	function changeBgColor(color:FlxColor, time:Float):Void{
+		if(bgColorTween != null && bgColorTween.active){
+			bgColorTween.cancel();
+			bgColorTween.destroy();
+		}
+		
+		bgColorTween = FlxTween.color(bg, time, bg.color, color);
+
+		if(scoreColorTween != null && scoreColorTween.active){
+			scoreColorTween.cancel();
+			scoreColorTween.destroy();
+		}
+		
+		scoreColorTween = FlxTween.color(scoreBg, time, scoreBg.color, color.getDarkened(.2));
 	}
 }
