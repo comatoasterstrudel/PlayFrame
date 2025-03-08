@@ -14,6 +14,26 @@ class PlayState extends FlxState
 	var scoreBg:FlxSprite;
 
 	/**
+	 * the scrolling tiles behind the score
+	 */
+	var scoreBgTile:FlxBackdrop;
+	
+	/**
+	 * the camera that holds the top portion of the screen
+	 */
+	var scoreCam:FlxCamera;
+	
+	/**
+	 * thhe scrolling bg at the top
+	 */
+	var topScroller:FlxBackdrop;
+	 
+	/**
+	 * thhe scrolling bg at the top
+	 */
+	var bottomScroller:FlxBackdrop;
+	 
+	/**
 	 * how tall the scorebg should be
 	 */
 	public static final scoreBgHeight:Int = 155;
@@ -46,7 +66,7 @@ class PlayState extends FlxState
 	/**
 	 * which avatar the player is using
 	 */
-	public static var curAvatar:String = 'gerbo';
+	public static var curAvatar:String = 'hexie';
 	
 	/**
 	 * how many lives you can have
@@ -66,13 +86,34 @@ class PlayState extends FlxState
         bg.velocity.set(10, 10);
         add(bg);
 		
-		bgColor = FlxColor.WHITE;
+		scoreCam = new FlxCamera(0, 0, FlxG.width, scoreBgHeight);
+		scoreCam.bgColor = FlxColor.BLACK;
+		FlxG.cameras.add(scoreCam, false);
 		
 		scoreBg = new FlxSprite().makeGraphic(FlxG.width, scoreBgHeight, 0xFF919191);
+		scoreBg.camera = scoreCam;
 		add(scoreBg);
 		
+		scoreBgTile = new FlxBackdrop('assets/images/avatartiles/' + curAvatar + '.png', XY, 0, 0);
+		scoreBgTile.alpha = .2;
+        scoreBgTile.velocity.set(20, 20);
+		scoreBgTile.camera = scoreCam;
+        add(scoreBgTile);
+		
 		lifeCounter = new LifeCounter();
+		lifeCounter.camera = scoreCam;
 		add(lifeCounter);
+		
+		topScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
+		topScroller.y = scoreBgHeight;
+        topScroller.velocity.set(10, 0);
+        add(topScroller);
+		
+		bottomScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
+		bottomScroller.y = FlxG.height - bottomScroller.height;
+		bottomScroller.flipY = true;
+        bottomScroller.velocity.set(10, 0);
+        add(bottomScroller);
 		
 		changeBgColor(FlxColor.WHITE, 0.001);
 		
@@ -132,6 +173,11 @@ class PlayState extends FlxState
 		bg.color = gameColor;
 		scoreBg.color = gameColor.getDarkened(.2);	
 		
+		scoreBgTile.color = gameColor;
+		
+		topScroller.color = gameColor.getDarkened(.3);	
+		bottomScroller.color = gameColor.getDarkened(.3);	
+
 		lifeCounter.portrait.color = gameColor.getLightened(.2);
 		
 		for(i in lifeCounter.lives){
