@@ -155,12 +155,13 @@ class PlayState extends FlxState
 		
 		beatManager.update(elapsed);
 		
-		if(FlxG.keys.justPressed.ESCAPE){
+		if(Controls.getControl('BACK', 'RELEASE')){
 			FlxG.switchState(new CharacterSelectState());	
 			FlxG.sound.music.stop();
 			FlxG.sound.music.time = 0;
 		}
 		
+		#if DEBUG
 		if(FlxG.keys.justReleased.SEVEN){
 			removeLife();
 		}
@@ -168,6 +169,7 @@ class PlayState extends FlxState
 		if(FlxG.keys.justReleased.SIX){
 			updateSpeed(.1);
 		}
+		#end
 		
 		updateColors();
 	}

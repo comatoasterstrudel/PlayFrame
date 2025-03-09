@@ -68,15 +68,15 @@ class CharacterSelectState extends FlxState
 	{
 		super.update(elapsed);
 		
-		if(FlxG.keys.justPressed.LEFT){
+		if(Controls.getControl('LEFT', 'RELEASE')){
 			changeSelection(-1);
 		}
 		
-		if(FlxG.keys.justPressed.RIGHT){
+		if(Controls.getControl('RIGHT', 'RELEASE')){
 			changeSelection(1);
 		}
 		
-		if(FlxG.keys.justPressed.Z){
+		if(Controls.getControl('ACCEPT', 'RELEASE')){
 			PlayState.curAvatar = avatars[curSelected];
 			FlxG.switchState(new PlayState());
 		}
