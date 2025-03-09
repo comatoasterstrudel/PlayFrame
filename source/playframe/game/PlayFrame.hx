@@ -53,10 +53,6 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         groupList = [baseSceneGroup, microgameGroup, transitionGroup];
         
         reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
-        
-        //thing2 = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
-        //thing2.velocity.set(20, 20);
-        //thing.add(thing2);
     }
     
     override function update(elapsed:Float):Void{
