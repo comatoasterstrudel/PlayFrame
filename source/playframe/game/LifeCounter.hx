@@ -47,6 +47,8 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         
     var namePlateTween:FlxTween;
 
+    var lifecount:Int = 4;
+    
     public function new():Void{
         super();
         
@@ -85,8 +87,14 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         
         ogPortraitPos = portrait.x + portrait.width / 2;
 
+        var iterator = 1;
+        
         for(i in lives){
             i.x += 100;
+            
+            i.ID = iterator;
+            
+            iterator ++;
         }
         
         namePlate = new FlxSprite().loadGraphic('assets/images/nameplates/'+ PlayState.curAvatar  + '.png');
@@ -145,6 +153,20 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         
         namePlate.angle = (curBeat % 2 == 0 ? -10 : 10);
         namePlateTween = FlxTween.tween(namePlate, {angle: 0}, 1, {ease: FlxEase.quartOut});   
+    }
+    
+    /**
+     * call this to update how many lives are being tracked
+     * @param lifecount how many
+     */
+    public function updateLives(lifecount:Int):Void{
+        this.lifecount = lifecount;
+        
+        for(i in lives){
+            if(i.ID > lifecount) i.animation.play('bad'); else i.animation.play('good');
+        }
+         
+        portrait.animation.play('hp' + lifecount);
     }
     
     override function destroy():Void{

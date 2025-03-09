@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="trifecta.png">
+<SubTexture name="good0000" x="0" y="0" width="572" height="705" frameX="-111" frameY="-9" frameWidth="768" frameHeight="768" />
+<SubTexture name="bad0000" x="572" y="0" width="572" height="705" frameX="-111" frameY="-9" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

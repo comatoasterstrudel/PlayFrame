@@ -20,6 +20,8 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
      */
     public static final frameMargin:Int = 20;
      
+    var thing2:FlxBackdrop;
+    
     public function new(positionOffset:Float){
         super();
         
@@ -30,9 +32,13 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         var thing = new FlxTypedGroup<FlxSprite>();
         add(thing);
         
-        var thing2 = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
+        thing2 = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
         thing2.velocity.set(20, 20);
         thing.add(thing2);
+    }
+    
+    public function updateSpeed():Void{
+        thing2.velocity.set(20 * PlayState.additiveSpeed, 20 * PlayState.additiveSpeed);
     }
     
     override function add(basic:FlxTypedGroup<FlxSprite>):FlxTypedGroup<FlxSprite>{

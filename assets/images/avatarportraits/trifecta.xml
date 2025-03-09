@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="trifecta.png">
+<SubTexture name="hp40000" x="0" y="0" width="368" height="748" frameX="-205" frameY="-24" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp30000" x="368" y="0" width="368" height="748" frameX="-205" frameY="-24" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp20000" x="736" y="0" width="368" height="748" frameX="-205" frameY="-24" frameWidth="768" frameHeight="768" />
+<SubTexture name="hp10000" x="1104" y="0" width="567" height="748" frameX="-81" frameY="-24" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

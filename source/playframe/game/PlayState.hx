@@ -1,6 +1,6 @@
 package playframe.game;
 
-import flixel.tweens.misc.ColorTween;
+import flixel.sound.FlxSound;
 
 /**
  * the state with the game!! duhh
@@ -74,16 +74,36 @@ class PlayState extends FlxState
 	public static var maxLives:Int = 4;
 	
 	/**
+	 * how many lives you have
+	 */
+	var lives:Int = 0;
+	
+	/**
 	 * the class that handles the bpm and such
 	 */
 	var beatManager:BeatManager;
 	
+	/**
+	 * how fast the game is
+	 */
+	public static var additiveSpeed:Float = 1;
+	
+	/**
+	 * how fast the game is
+	 */
+	public static var subtractiveSpeed:Float = 1;
+			
 	override public function create()
 	{		 
 		super.create();
 		
+		preloadThings();
+		
+		additiveSpeed = 1;
+		subtractiveSpeed = 1;
+		lives = maxLives;
+		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
-        bg.velocity.set(10, 10);
         add(bg);
 		
 		scoreCam = new FlxCamera(0, 0, FlxG.width, scoreBgHeight);
@@ -96,33 +116,37 @@ class PlayState extends FlxState
 		
 		scoreBgTile = new FlxBackdrop('assets/images/avatartiles/' + curAvatar + '.png', XY, 0, 0);
 		scoreBgTile.alpha = .2;
-        scoreBgTile.velocity.set(20, 20);
 		scoreBgTile.camera = scoreCam;
         add(scoreBgTile);
 		
 		lifeCounter = new LifeCounter();
 		lifeCounter.camera = scoreCam;
+		lifeCounter.updateLives(lives);
 		add(lifeCounter);
 		
 		topScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
 		topScroller.y = scoreBgHeight;
-        topScroller.velocity.set(10, 0);
         add(topScroller);
 		
 		bottomScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
 		bottomScroller.y = FlxG.height - bottomScroller.height;
 		bottomScroller.flipY = true;
-        bottomScroller.velocity.set(10, 0);
         add(bottomScroller);
-		
-		changeBgColor(FlxColor.WHITE, 0.001);
 		
 		playFrame = new PlayFrame(0);
 		add(playFrame);
 		
-		FlxG.sound.playMusic('assets/music/play.ogg', .3, true);
+		changeActiveMusic('play4');
 		
 		beatManager = new BeatManager(90, beatHit);
+		
+		var data = new AvatarData(curAvatar);
+		
+		changeBgColor(data.color, 0.001);
+		
+		data = null;
+		
+		updateSpeed(0);
 	}
 
 	override public function update(elapsed:Float)
@@ -147,7 +171,54 @@ class PlayState extends FlxState
 			changeBgColor(FlxColor.PURPLE, 2);
 		}
 		
+		if(FlxG.keys.justReleased.SEVEN){
+			removeLife();
+		}
+		
+		if(FlxG.keys.justReleased.SIX){
+			updateSpeed(.1);
+		}
+		
 		updateColors();
+	}
+	
+	function removeLife():Void{
+		var iconToShake:FlxSprite = null;
+	
+		for(i in lifeCounter.lives){
+			if(i.ID == lives) iconToShake = i;	
+		}
+		
+		FlxTween.shake(iconToShake, 0.1, .2, XY);
+		lives --;
+		lifeCounter.updateLives(lives);		
+		
+		changeActiveMusic('play' + lives);
+				
+		FlxG.sound.play('assets/sounds/loselife.ogg', 1);
+		
+		updateSpeed(0);
+	}
+	
+	/**
+	 * call this to change how fast the game is
+	 * @param amount the amount to change the speed by
+	 */
+	function updateSpeed(amount:Float):Void{
+		additiveSpeed += amount;
+		subtractiveSpeed -= amount;
+		
+		playFrame.updateSpeed();
+		
+		FlxG.sound.music.pitch = additiveSpeed;
+						
+		bg.velocity.set(10 * additiveSpeed, 10 * additiveSpeed);
+		
+		scoreBgTile.velocity.set(20 * additiveSpeed, 20 * additiveSpeed);
+
+		topScroller.velocity.set(10 * additiveSpeed, 0);
+
+		bottomScroller.velocity.set(10 * additiveSpeed, 0);
 	}
 	
 	/**
@@ -181,7 +252,11 @@ class PlayState extends FlxState
 		lifeCounter.portrait.color = gameColor.getLightened(.2);
 		
 		for(i in lifeCounter.lives){
-			i.color = gameColor.getLightened(.2);
+			if(i.animation.curAnim.name == 'good'){
+				i.color = gameColor.getLightened(.2);				
+			} else {
+				i.color = gameColor.getDarkened(.5);
+			}
 		}
 		
 		lifeCounter.namePlate.color = gameColor.getLightened(.2);
@@ -192,5 +267,26 @@ class PlayState extends FlxState
 	 */
 	function beatHit():Void{
 		lifeCounter.beatHit(BeatManager.globalCurBeat);
+	}
+		
+	function changeActiveMusic(name:String):Void{
+		var ogTime:Float = 0;			
+
+		if(FlxG.sound.music != null){
+			ogTime = FlxG.sound.music.time;			
+		}
+		
+		FlxG.sound.playMusic('assets/music/' + name +  '.ogg', .3, true);
+		
+		FlxG.sound.music.time = ogTime;
+		
+		trace(FlxG.sound.music.time);
+	}
+	
+	function preloadThings():Void{
+		FlxG.sound.cache('assets/music/play4.ogg');
+		FlxG.sound.cache('assets/music/play3.ogg');
+		FlxG.sound.cache('assets/music/play2.ogg');
+		FlxG.sound.cache('assets/music/play1.ogg');
 	}
 }
