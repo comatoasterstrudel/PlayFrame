@@ -1,5 +1,7 @@
 package playframe.game;
 
+import playframe.json.MicrogameData;
+
 /**
  * the games namesake. this contains all of the gameplay for each player!!
  */
@@ -19,8 +21,22 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
      * how wide the gaps between the top anbd bottom should be
      */
     public static final frameMargin:Int = 20;
-     
-    var thing2:FlxBackdrop;
+    
+    var frameHeight:Int = 0;
+    
+    var baseSceneGroup:FlxTypedGroup<FlxSprite>;
+    
+    var microgameGroup:FlxTypedGroup<FlxSprite>;
+    
+    var transitionGroup:FlxTypedGroup<FlxSprite>;
+    
+    var groupList:Array<FlxTypedGroup<FlxSprite>> = [];
+    
+    var baseBackground:FlxBackdrop;
+    
+    var baseCharacter:FlxSprite;
+    
+    var microgameScript:HaxeScript;
     
     public function new(positionOffset:Float){
         super();
@@ -29,21 +45,122 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 		frameCamera.bgColor = FlxColor.BLACK;
 		FlxG.cameras.add(frameCamera, false);
         
-        var thing = new FlxTypedGroup<FlxSprite>();
-        add(thing);
+        frameHeight = frameCamera.height;
         
-        thing2 = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
-        thing2.velocity.set(20, 20);
-        thing.add(thing2);
+        baseSceneGroup = new FlxTypedGroup<FlxSprite>();        
+        microgameGroup = new FlxTypedGroup<FlxSprite>();        
+        transitionGroup = new FlxTypedGroup<FlxSprite>();        
+        groupList = [baseSceneGroup, microgameGroup, transitionGroup];
+        
+        reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
+        
+        //thing2 = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
+        //thing2.velocity.set(20, 20);
+        //thing.add(thing2);
+    }
+    
+    override function update(elapsed:Float):Void{
+        super.update(elapsed);
+        
+        if(microgameScript != null) {
+            microgameScript.executeFunc('update', [elapsed]);
+        }
     }
     
     public function updateSpeed():Void{
-        thing2.velocity.set(20 * PlayState.additiveSpeed, 20 * PlayState.additiveSpeed);
+        if(baseBackground != null){
+            baseBackground.velocity.set(20 * PlayState.additiveSpeed, 20 * PlayState.additiveSpeed);            
+        }
     }
     
     override function add(basic:FlxTypedGroup<FlxSprite>):FlxTypedGroup<FlxSprite>{
         basic.camera = frameCamera;
         super.add(basic);
         return basic;
+    }
+    
+    var characterSprite:FlxSprite;
+    
+    function reOrderGroups(groups:Array<FlxTypedGroup<FlxSprite>>):Void{
+        for(i in groupList){
+            remove(i);
+        }
+        
+        for(i in groups){
+            add(i);
+        }
+    }
+    
+    public function addIntroScene():Void{
+        reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
+
+        baseBackground = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
+        baseSceneGroup.add(baseBackground);
+        
+        updateSpeed();
+        
+        baseCharacter = new FlxSprite().loadGraphic('assets/images/charsprites/placeholder.png');
+        Utilities.centerSpriteOnPos(baseCharacter, frameWidth / 2);
+        baseCharacter.y = frameHeight;
+        baseSceneGroup.add(baseCharacter);
+        FlxTween.tween(baseCharacter, {y: frameHeight - baseCharacter.height}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+    }
+    
+    public function startMicroGame(name:String):Void{
+        reOrderGroups([microgameGroup, baseSceneGroup, transitionGroup]);
+        
+        var data = new MicrogameData(name);
+        
+        var transprite = new FlxSprite().makeGraphic(frameWidth, frameHeight, data.color.getDarkened(.7));
+        transprite.x = -transprite.width;
+        transprite.alpha = 0;
+        transitionGroup.add(transprite);
+        
+        var text = new FlxText();
+        text.setFormat('assets/fonts/Andy.ttf', 70, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
+		text.text = data.text;
+		Utilities.centerSpriteOnPos(text, frameWidth / 2, frameHeight / 2);
+		transitionGroup.add(text);
+        
+        text.y += frameHeight;
+        FlxTween.tween(text, {y: text.y - frameHeight}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.backOut});
+
+        FlxTween.tween(transprite, {alpha: 1}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+        FlxTween.tween(transprite, {x: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+        
+        new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+        {
+            baseCharacter.destroy();
+            baseBackground.destroy();
+            baseCharacter = null;
+            baseBackground = null;
+            
+            initMicroGame();
+            
+            FlxTween.tween(text, {y: text.y - frameHeight}, .7 * PlayState.subtractiveSpeed, {ease: FlxEase.backIn});
+        
+            FlxTween.tween(transprite, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+            FlxTween.tween(transprite, {x: transprite.width}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+
+            new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+            {
+                transprite.destroy();
+                text.destroy();
+            });
+        });
+    }
+    
+    function initMicroGame():Void{
+        microgameScript = HaxeScript.create('assets/data/microgames/' + PlayState.curMicrogame + '.hx');
+		microgameScript.loadFile('assets/data/microgames/' + PlayState.curMicrogame + '.hx');
+
+		ScriptSupport.setScriptDefaultVars(microgameScript, '', '');
+			
+        microgameScript.setVariable("microgameGroup", microgameGroup);
+
+        microgameScript.setVariable("frameWidth", frameWidth);
+        microgameScript.setVariable("frameHeight", frameHeight);
+
+        microgameScript.executeFunc("create");
     }
 } 

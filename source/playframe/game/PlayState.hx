@@ -1,6 +1,7 @@
 package playframe.game;
 
 import flixel.sound.FlxSound;
+import playframe.json.MicrogameData;
 
 /**
  * the state with the game!! duhh
@@ -92,7 +93,9 @@ class PlayState extends FlxState
 	 * how fast the game is
 	 */
 	public static var subtractiveSpeed:Float = 1;
-			
+		
+	public static var curMicrogame:String = '';
+	
 	override public function create()
 	{		 
 		super.create();
@@ -102,6 +105,7 @@ class PlayState extends FlxState
 		additiveSpeed = 1;
 		subtractiveSpeed = 1;
 		lives = maxLives;
+		curMicrogame = '';
 		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
         add(bg);
@@ -135,6 +139,12 @@ class PlayState extends FlxState
 		
 		playFrame = new PlayFrame(0);
 		add(playFrame);
+		playFrame.addIntroScene();
+		
+		new FlxTimer().start(3, function(tmr:FlxTimer)
+		{
+			startMicrogame('test');
+		});
 		
 		changeActiveMusic('play4');
 		
@@ -161,7 +171,7 @@ class PlayState extends FlxState
 			FlxG.sound.music.time = 0;
 		}
 		
-		#if DEBUG
+		#if debug
 		if(FlxG.keys.justReleased.SEVEN){
 			removeLife();
 		}
@@ -172,6 +182,21 @@ class PlayState extends FlxState
 		#end
 		
 		updateColors();
+	}
+	
+	function startMicrogame(name:String):Void{
+		curMicrogame = name;
+		
+		var data = new MicrogameData(name);
+		
+		playFrame.startMicroGame(name);
+		
+		changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
+
+		new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+		{
+			//
+		});
 	}
 	
 	function removeLife():Void{

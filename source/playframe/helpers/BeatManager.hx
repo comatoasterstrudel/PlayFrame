@@ -8,8 +8,6 @@ class BeatManager
 	var bpm:Float;
 	var beatInterval:Float;
 
-	public var timer:FlxTimer;
-
 	var beatFunction:Void -> Void;
 
 	public var curBeat:Int = 0;

@@ -15,6 +15,8 @@ import flixel.text.FlxText.FlxTextFormatMarkerPair;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import hscript.Expr;
+import hscript.Interp;
 import flixel.tweens.misc.ColorTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
@@ -34,7 +36,13 @@ import playframe.helpers.Utilities;
 import playframe.json.AvatarData;
 import playframe.menu.CharacterSelectSprite;
 import playframe.menu.CharacterSelectState;
+import playframe.script.HScript;
+import playframe.script.HaxeScript;
+import playframe.script.ScriptSupport;
 import sys.FileSystem;
 import sys.io.File;
 
 using StringTools;
+
+import haxe.Exception;
+import haxe.io.Path;
