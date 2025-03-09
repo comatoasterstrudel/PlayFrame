@@ -129,11 +129,28 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             }
         }   
         
+        var scaleAdditive:Float = 1.2;
+        var scaleSubtractive:Float = .8;
+        
+        switch(lifecount){
+            case 3:
+                scaleAdditive = 1.3;
+                scaleSubtractive = .7;
+            case 2:
+                scaleAdditive = 1.4;
+                scaleSubtractive = .6;
+            case 1:
+                scaleAdditive = 1.5;
+                scaleSubtractive = .5;
+        }
+        
         liveScaleTweens = [];
         
         for(i in lives){
-            i.scale.set(ogLiveSize * 1.2, ogLiveSize * 1.2);
-            liveScaleTweens.push(FlxTween.tween(i.scale, {x: ogLiveSize, y:ogLiveSize}, 1, {ease: FlxEase.quartOut}));            
+            if(i.animation.curAnim.name == 'good'){
+                i.scale.set(ogLiveSize * scaleAdditive, ogLiveSize * scaleAdditive);
+                liveScaleTweens.push(FlxTween.tween(i.scale, {x: ogLiveSize, y:ogLiveSize}, 1, {ease: FlxEase.quartOut}));     
+            }          
         }
         
         if(portratScaleTween != null && portratScaleTween.active){
@@ -141,7 +158,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             portratScaleTween.destroy();
         }
         
-        portrait.scale.set(ogPortraitSize * 1.2, ogPortraitSize * .8);
+        portrait.scale.set(ogPortraitSize * scaleAdditive, ogPortraitSize * scaleSubtractive);
         portratScaleTween = FlxTween.tween(portrait.scale, {x: ogPortraitSize, y:ogPortraitSize}, 1, {ease: FlxEase.quartOut});   
         
         updatePortraitPos();
@@ -151,7 +168,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             namePlateTween.destroy();
         }
         
-        namePlate.angle = (curBeat % 2 == 0 ? -10 : 10);
+        namePlate.angle = (curBeat % 2 == 0 ? (-10 * scaleAdditive) : (10 * scaleAdditive));
         namePlateTween = FlxTween.tween(namePlate, {angle: 0}, 1, {ease: FlxEase.quartOut});   
     }
     
@@ -163,7 +180,13 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         this.lifecount = lifecount;
         
         for(i in lives){
-            if(i.ID > lifecount) i.animation.play('bad'); else i.animation.play('good');
+            if(i.ID > lifecount) {
+                i.animation.play('bad'); 
+                i.scale.set(ogLiveSize, ogLiveSize);
+                FlxTween.cancelTweensOf(i);
+            } else { 
+                i.animation.play('good'); 
+            }
         }
          
         portrait.animation.play('hp' + lifecount);

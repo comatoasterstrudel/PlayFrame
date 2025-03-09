@@ -155,20 +155,10 @@ class PlayState extends FlxState
 		
 		beatManager.update(elapsed);
 		
-		if(FlxG.keys.justReleased.LEFT){
-			changeBgColor(FlxColor.RED, 2);
-		}
-		
-		if(FlxG.keys.justReleased.RIGHT){
-			changeBgColor(FlxColor.GREEN, 2);
-		}
-		
-		if(FlxG.keys.justReleased.DOWN){
-			changeBgColor(FlxColor.BLUE, 2);
-		}
-		
-		if(FlxG.keys.justReleased.UP){
-			changeBgColor(FlxColor.PURPLE, 2);
+		if(FlxG.keys.justPressed.ESCAPE){
+			FlxG.switchState(new CharacterSelectState());	
+			FlxG.sound.music.stop();
+			FlxG.sound.music.time = 0;
 		}
 		
 		if(FlxG.keys.justReleased.SEVEN){
@@ -188,10 +178,10 @@ class PlayState extends FlxState
 		for(i in lifeCounter.lives){
 			if(i.ID == lives) iconToShake = i;	
 		}
-		
-		FlxTween.shake(iconToShake, 0.1, .2, XY);
+
 		lives --;
 		lifeCounter.updateLives(lives);		
+		FlxTween.shake(iconToShake, 0.1, .2, XY);
 		
 		changeActiveMusic('play' + lives);
 				
@@ -278,9 +268,7 @@ class PlayState extends FlxState
 		
 		FlxG.sound.playMusic('assets/music/' + name +  '.ogg', .3, true);
 		
-		FlxG.sound.music.time = ogTime;
-		
-		trace(FlxG.sound.music.time);
+		FlxG.sound.music.time = ogTime;		
 	}
 	
 	function preloadThings():Void{

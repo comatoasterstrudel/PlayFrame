@@ -1,4 +1,3 @@
-import openfl.system.System;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -22,12 +21,15 @@ import haxe.iterators.StringIteratorUnicode;
 import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
+import openfl.system.System;
 import playframe.game.LifeCounter;
 import playframe.game.PlayFrame;
 import playframe.game.PlayState;
 import playframe.helpers.BeatManager;
 import playframe.helpers.Utilities;
 import playframe.json.AvatarData;
+import playframe.menu.CharacterSelectSprite;
+import playframe.menu.CharacterSelectState;
 import sys.FileSystem;
 import sys.io.File;
 
