@@ -38,11 +38,11 @@ function create(){
     
     guy = new FlxSprite();
     guy.frames = FlxAtlasFrames.fromSparrow('assets/images/microgames/choosecorrectly/guy.png', 'assets/images/microgames/choosecorrectly/guy.xml');
-    guy.animation.addByPrefix('idle', 'idle', 10);
-    guy.animation.addByPrefix('walk', 'walk', 10);
-    guy.animation.addByPrefix('pop', 'pop', 10, false);
-    guy.animation.addByPrefix('polploop', 'polploop', 10);
-    guy.animation.addByPrefix('happy', 'happy', 10);
+    guy.animation.addByPrefix('idle', 'idle', 10 * PlayState.additiveSpeed);
+    guy.animation.addByPrefix('walk', 'walk', 10 * PlayState.additiveSpeed);
+    guy.animation.addByPrefix('pop', 'pop', 10 * PlayState.additiveSpeed, false);
+    guy.animation.addByPrefix('polploop', 'polploop', 10 * PlayState.additiveSpeed);
+    guy.animation.addByPrefix('happy', 'happy', 10 * PlayState.additiveSpeed);
     guy.scale.set(2,2);
     guy.updateHitbox();
     Utilities.centerSpriteOnPos(guy, frameWidth / 2, frameHeight / 2);

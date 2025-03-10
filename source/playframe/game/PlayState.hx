@@ -452,6 +452,10 @@ class PlayState extends FlxState
 			allMicrogames.push(stuff[0]);
 		}
 		
+		#if forceMicrogame
+		allMicrogames = [Compiler.getDefine("forceMicrogame").split('=')[0]];
+		#end
+		
 		fillAvailableMicrogames();
 
 		trace('Filled microgames!! ' + allMicrogames);		

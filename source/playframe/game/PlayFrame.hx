@@ -70,6 +70,9 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         if(baseBackground != null){
             baseBackground.velocity.set(20 * PlayState.additiveSpeed, 20 * PlayState.additiveSpeed);            
         }
+        if(baseCharacter != null){
+            baseCharacter.updateFps();
+        }
     }
     
     override function add(basic:FlxTypedGroup<FlxSprite>):FlxTypedGroup<FlxSprite>{

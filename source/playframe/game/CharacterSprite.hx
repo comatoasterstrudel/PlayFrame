@@ -13,11 +13,11 @@ class CharacterSprite extends FlxSprite
         super(); 
 
         frames = FlxAtlasFrames.fromSparrow('assets/images/charsprites/' + name + '.png', 'assets/images/charsprites/' + name + '.xml');
-        animation.addByPrefix('intro', 'intro', 3);
-        animation.addByPrefix('normal', 'intro', 3);
-        animation.addByPrefix('win', 'win', 3);
-        animation.addByPrefix('lose', 'lose', 3);
-        animation.addByPrefix('scared', 'scared', 3);
+        animation.addByPrefix('intro', 'intro', 3 * PlayState.additiveSpeed);
+        animation.addByPrefix('normal', 'intro', 3 * PlayState.additiveSpeed);
+        animation.addByPrefix('win', 'win', 3 * PlayState.additiveSpeed);
+        animation.addByPrefix('lose', 'lose', 3 * PlayState.additiveSpeed);
+        animation.addByPrefix('scared', 'scared', 3 * PlayState.additiveSpeed);
         setGraphicSize(Std.int(width * .63));
         
         updateHitbox();
@@ -45,6 +45,15 @@ class CharacterSprite extends FlxSprite
               
             scale.set(ogScale * 1.1, ogScale * .9);
             FlxTween.tween(scale, {x: ogScale, y: ogScale}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+        }
+    }
+    
+    public function updateFps():Void{
+        for(i in animation.getAnimationList()){
+            i.frameRate = 3 * PlayState.additiveSpeed;
+        }
+        if(animation.curAnim != null){
+            animation.play(animation.curAnim.name, true);            
         }
     }
 }
