@@ -25,6 +25,11 @@ class PlayState extends FlxState
 	var scoreCam:FlxCamera;
 	
 	/**
+	 * the camera that holds the top portion of the screen
+	 */
+	var scrollerCam:FlxCamera;
+	 
+	/**
 	 * thhe scrolling bg at the top
 	 */
 	var topScroller:FlxBackdrop;
@@ -96,6 +101,12 @@ class PlayState extends FlxState
 		
 	public static var curMicrogame:String = '';
 	
+	public static var wonMicrogame:Bool = true;
+	
+	var timeLeft:Float = 1;
+	
+	var timeBar:FlxBar;
+	
 	override public function create()
 	{		 
 		super.create();
@@ -114,6 +125,10 @@ class PlayState extends FlxState
 		scoreCam.bgColor = FlxColor.BLACK;
 		FlxG.cameras.add(scoreCam, false);
 		
+		scrollerCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		scrollerCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(scrollerCam, false);
+		
 		scoreBg = new FlxSprite().makeGraphic(FlxG.width, scoreBgHeight, 0xFF919191);
 		scoreBg.camera = scoreCam;
 		add(scoreBg);
@@ -128,20 +143,28 @@ class PlayState extends FlxState
 		lifeCounter.updateLives(lives);
 		add(lifeCounter);
 		
+		timeBar = new FlxBar(0, scoreBgHeight, BOTTOM_TO_TOP, FlxG.width, FlxG.height - scoreBgHeight, this, 'timeLeft', 0, 1);
+		timeBar.createFilledBar(FlxColor.TRANSPARENT, FlxColor.BLACK);
+		timeBar.alpha = 0;
+		timeBar.numDivisions = Std.int(timeBar.height);
+		add(timeBar);
+		
 		topScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
 		topScroller.y = scoreBgHeight;
+		topScroller.camera = scrollerCam;
         add(topScroller);
 		
 		bottomScroller = new FlxBackdrop('assets/images/scorebg.png', X, 0, 0);
 		bottomScroller.y = FlxG.height - bottomScroller.height;
 		bottomScroller.flipY = true;
+		bottomScroller.camera = scrollerCam;
         add(bottomScroller);
 		
 		playFrame = new PlayFrame(0);
 		add(playFrame);
 		playFrame.addIntroScene();
 		
-		new FlxTimer().start(3, function(tmr:FlxTimer)
+		new FlxTimer().start(2.7, function(tmr:FlxTimer)
 		{
 			startMicrogame('test');
 		});
@@ -195,7 +218,33 @@ class PlayState extends FlxState
 
 		new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 		{
-			//
+			timeLeft = 1;
+
+			FlxTween.tween(timeBar, {alpha: .15}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+			
+			new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+			{				
+				FlxTween.tween(this, {timeLeft: 0}, data.timer * PlayState.subtractiveSpeed, {onComplete: function(f):Void{
+					var data = new AvatarData(curAvatar);
+
+					changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
+					
+					FlxTween.tween(timeBar, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+
+					playFrame.endMicroGame();
+					
+					if(!wonMicrogame) {
+						removeLife();
+					} else {
+						addPoint();
+					}
+					
+					new FlxTimer().start(3.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+					{
+						startMicrogame('test');
+					});
+				}});   
+			});
 		});
 	}
 	
@@ -215,6 +264,12 @@ class PlayState extends FlxState
 		FlxG.sound.play('assets/sounds/loselife.ogg', 1);
 		
 		updateSpeed(0);
+	}
+	
+	function addPoint():Void{
+		FlxG.sound.play('assets/sounds/win.ogg', .7);
+
+		lifeCounter.addScore(1);
 	}
 	
 	/**
@@ -267,6 +322,10 @@ class PlayState extends FlxState
 		bottomScroller.color = gameColor.getDarkened(.3);	
 
 		lifeCounter.portrait.color = gameColor.getLightened(.2);
+		
+		for(i in lifeCounter.scoreSprites){
+			i.color = gameColor.getLightened(.2);
+		}
 		
 		for(i in lifeCounter.lives){
 			if(i.animation.curAnim.name == 'good'){

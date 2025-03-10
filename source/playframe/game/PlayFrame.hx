@@ -34,7 +34,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     
     var baseBackground:FlxBackdrop;
     
-    var baseCharacter:FlxSprite;
+    var baseCharacter:CharacterSprite;
     
     var microgameScript:HaxeScript;
     
@@ -89,17 +89,23 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     
     public function addIntroScene():Void{
         reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
-
-        baseBackground = new FlxBackdrop('assets/images/placeholder.png', XY, 0, 0);
+                
+        addBaseObjects();
+        
+        baseCharacter.playAnim('intro');
+    }
+    
+    function addBaseObjects():Void{
+        baseBackground = new FlxBackdrop('assets/images/framebg/' + PlayState.curAvatar + '.png', XY, 0, 0);
         baseSceneGroup.add(baseBackground);
         
-        updateSpeed();
-        
-        baseCharacter = new FlxSprite().loadGraphic('assets/images/charsprites/placeholder.png');
+        baseCharacter = new CharacterSprite(PlayState.curAvatar);
         Utilities.centerSpriteOnPos(baseCharacter, frameWidth / 2);
         baseCharacter.y = frameHeight;
         baseSceneGroup.add(baseCharacter);
         FlxTween.tween(baseCharacter, {y: frameHeight - baseCharacter.height}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+        
+        updateSpeed();
     }
     
     public function startMicroGame(name:String):Void{
@@ -158,5 +164,36 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         microgameScript.setVariable("frameHeight", frameHeight);
 
         microgameScript.executeFunc("create");
+    }
+    
+    public function endMicroGame():Void{
+        microgameScript.executeFunc("endMicrogame");
+        
+        addBaseObjects();
+        
+        if(!PlayState.wonMicrogame){
+            baseCharacter.playAnim('lose');
+        } else {
+            baseCharacter.playAnim('win');
+        }
+        
+        new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+        {
+            baseCharacter.playAnim('normal', true);
+        });
+                
+        baseBackground.alpha = 0;
+        
+        FlxTween.tween(baseBackground, {alpha: 1}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+
+        new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+        {
+            microgameScript.executeFunc("destroyMicrogame");
+            
+            microgameScript.destroy();
+            microgameScript = null;
+            
+            trace('Destroyed microgame!!! ' + PlayState.curMicrogame);
+        });
     }
 } 

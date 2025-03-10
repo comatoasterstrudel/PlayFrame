@@ -1,5 +1,6 @@
 {
     "name": "test",
-    "text": "Walk Left!",
-    "color": [112, 0, 97]
+    "text": "Choose Correctly!",
+    "color": [64, 64, 64],
+    "timer": 4
 }

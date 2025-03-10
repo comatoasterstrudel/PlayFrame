@@ -103,6 +103,8 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         namePlate.y = 15;
         namePlate.x = (FlxG.width - namePlate.width) - 62;
         add(namePlate);
+        
+        addScore(0);
     }
     
     override function update(elapsed:Float):Void{
@@ -190,6 +192,77 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         }
          
         portrait.animation.play('hp' + lifecount);
+    }
+    
+    var score:Int = 0;
+    
+    public var scoreSprites:Array<FlxSprite> = [];
+    var scoreSizeTweens:Array<FlxTween> = [];
+    var scorePosTweens:Array<FlxTween> = [];
+    
+    public function addScore(amount:Int):Void{
+        score += amount;
+        
+        for(i in scoreSprites){
+            i.destroy();
+        }
+        
+        scoreSprites = [];
+        
+        for(i in scoreSizeTweens){
+            if(i != null){
+                i.cancel();
+                i.destroy();
+            }    
+        }
+        
+        scoreSizeTweens = [];
+        
+        for(i in scorePosTweens){
+            if(i != null){
+                i.cancel();
+                i.destroy();
+            }    
+        }
+        
+        scorePosTweens = [];
+        
+        var wordArray = Utilities.stringToArray(Std.string(score));
+        
+        var iterator:Int = 0;
+        
+        for(i in wordArray){
+            var spr = new FlxSprite().loadGraphic('assets/images/scoresprites/' + i + '.png');
+            spr.y = 30;
+            spr.antialiasing = true;
+            add(spr);
+            scoreSprites.push(spr);
+            
+            if(amount > 0){
+                var scaleAdditive:Float = 1.4;
+                
+                switch(lifecount){
+                    case 3:
+                        scaleAdditive = 1.5;
+                    case 2:
+                        scaleAdditive = 1.6;
+                    case 1:
+                        scaleAdditive = 1.7;
+                }
+                
+                spr.scale.set(scaleAdditive, scaleAdditive);
+                scorePosTweens.push(FlxTween.tween(spr.scale, {x: 1, y: 1}, 1, {ease: FlxEase.quartOut}));      
+            }
+            
+            var ytweenmovement:Int = 10;
+                
+            spr.y -= ytweenmovement;
+            scorePosTweens.push(FlxTween.tween(spr, {y: spr.y + ytweenmovement}, 1, {startDelay: 2 * (iterator / wordArray.length), ease: FlxEase.smootherStepInOut, type: PINGPONG}));
+            
+            iterator++;
+        }
+        
+        Utilities.centerGroup(null, scoreSprites, 10, 190);
     }
     
     override function destroy():Void{
