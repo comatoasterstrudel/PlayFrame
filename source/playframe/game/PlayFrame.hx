@@ -53,9 +53,6 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         groupList = [baseSceneGroup, microgameGroup, transitionGroup];
         
         reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
-        
-        trace(frameHeight);
-        trace(frameWidth);
     }
     
     override function update(elapsed:Float):Void{

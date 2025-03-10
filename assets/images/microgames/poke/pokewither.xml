@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="pokewither.png">
+<SubTexture name="pokeleft0000" x="624" y="0" width="541" height="439" frameX="-15" frameY="-126" frameWidth="900" frameHeight="525" />
+<SubTexture name="pokeright0000" x="0" y="560" width="694" height="439" frameX="-15" frameY="-126" frameWidth="900" frameHeight="525" />
+<SubTexture name="win0000" x="0" y="0" width="624" height="560" frameX="-18" frameY="-5" frameWidth="900" frameHeight="525" />
+</TextureAtlas>

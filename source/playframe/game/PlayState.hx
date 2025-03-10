@@ -1,8 +1,5 @@
 package playframe.game;
 
-import flixel.sound.FlxSound;
-import playframe.json.MicrogameData;
-
 /**
  * the state with the game!! duhh
  * starting 3/7/2025 i hope i dont die making this
@@ -74,7 +71,7 @@ class PlayState extends FlxState
 	/**
 	 * which avatar the player is using
 	 */
-	public static var curAvatar:String = '8head';
+	public static var curAvatar:String = 'hexie';
 	
 	/**
 	 * how many lives you can have
@@ -469,6 +466,8 @@ class PlayState extends FlxState
 	
 	function pickMicrogame():String{
 		var microgame = availableMicrogames[FlxG.random.int(0,availableMicrogames.length - 1)];
+		
+		if(microgame == curMicrogame && allMicrogames.length > 1) return pickMicrogame(); //dont pick the same one again
 		
 		trace('Picked microgame!!! ' + microgame);
 
