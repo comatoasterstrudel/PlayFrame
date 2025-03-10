@@ -17,7 +17,9 @@ class CharacterSprite extends FlxSprite
         animation.addByPrefix('normal', 'intro', 3);
         animation.addByPrefix('win', 'win', 3);
         animation.addByPrefix('lose', 'lose', 3);
+        animation.addByPrefix('scared', 'scared', 3);
         setGraphicSize(Std.int(width * .63));
+        
         updateHitbox();
         
         ogScale = scale.x;        

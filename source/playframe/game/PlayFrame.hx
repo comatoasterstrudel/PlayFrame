@@ -53,6 +53,9 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         groupList = [baseSceneGroup, microgameGroup, transitionGroup];
         
         reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
+        
+        trace(frameHeight);
+        trace(frameWidth);
     }
     
     override function update(elapsed:Float):Void{
@@ -86,6 +89,18 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             add(i);
         }
     }
+    
+    var soundGroup:Array<FlxSound> = [];
+    
+    function playSound(path:String, volume:Float):Void{
+		var sound:FlxSound = new FlxSound();
+		sound.loadEmbedded(path, false);
+		sound.volume = volume;
+        sound.pitch = PlayState.additiveSpeed;
+		sound.play();
+		FlxG.sound.list.add(sound);
+		soundGroup.push(sound);
+	}
     
     public function addIntroScene():Void{
         reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
@@ -163,11 +178,22 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         microgameScript.setVariable("frameWidth", frameWidth);
         microgameScript.setVariable("frameHeight", frameHeight);
 
+        microgameScript.setVariable("playSound", playSound);
+
         microgameScript.executeFunc("create");
     }
     
     public function endMicroGame():Void{
         microgameScript.executeFunc("endMicrogame");
+        
+        for(i in soundGroup){
+            if(i != null){
+                if(i.playing) i.stop();
+                i.destroy();
+            }    
+        }
+        
+        soundGroup = [];
         
         addBaseObjects();
         
@@ -177,15 +203,26 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             baseCharacter.playAnim('win');
         }
         
+        var speedingUp = PlayState.checkSpeedUp();
+        
         new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
         {
-            baseCharacter.playAnim('normal', true);
+            if(speedingUp){
+                baseCharacter.playAnim('scared', true);
+                
+                new FlxTimer().start(4 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+                {
+                    baseCharacter.playAnim('normal', true);
+                });
+            } else {
+                baseCharacter.playAnim('normal', true);                
+            }
         });
                 
         baseBackground.alpha = 0;
         
         FlxTween.tween(baseBackground, {alpha: 1}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
-
+ 
         new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
         {
             microgameScript.executeFunc("destroyMicrogame");

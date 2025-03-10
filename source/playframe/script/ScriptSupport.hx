@@ -1,5 +1,7 @@
 package playframe.script;
 
+import flixel.graphics.atlas.FlxAtlas;
+
 class ScriptSupport {
 	public static function setScriptDefaultVars(script:HaxeScript, mod:String, settings:Dynamic)
 	{
@@ -87,6 +89,7 @@ class ScriptSupport {
 		script.setVariable("Utilities", Utilities);
 		script.setVariable("PlayState", PlayState);
 		script.setVariable("Controls", Controls);
+		script.setVariable("FlxAtlasFrames", FlxAtlasFrames);
 
 		script.mod = mod;
 	}

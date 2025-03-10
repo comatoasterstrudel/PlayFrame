@@ -29,6 +29,8 @@ class PlayState extends FlxState
 	 */
 	var scrollerCam:FlxCamera;
 	 
+	var speedCam:FlxCamera;
+	
 	/**
 	 * thhe scrolling bg at the top
 	 */
@@ -107,16 +109,26 @@ class PlayState extends FlxState
 	
 	var timeBar:FlxBar;
 	
+	public static var curScore:Int = 1;
+	
+	var speedSprite:FlxSprite;
+	var speedTween:FlxTween;
+	
+	public static var speedUps:Int = 0;
+	
 	override public function create()
 	{		 
 		super.create();
 		
 		preloadThings();
+		fillMicrogames();
 		
 		additiveSpeed = 1;
 		subtractiveSpeed = 1;
 		lives = maxLives;
 		curMicrogame = '';
+		curScore = 0;
+		speedUps = 0;
 		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
         add(bg);
@@ -164,9 +176,13 @@ class PlayState extends FlxState
 		add(playFrame);
 		playFrame.addIntroScene();
 		
+		speedCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		speedCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(speedCam, false);
+		
 		new FlxTimer().start(2.7, function(tmr:FlxTimer)
 		{
-			startMicrogame('test');
+			startMicrogame(pickMicrogame());
 		});
 		
 		changeActiveMusic('play4');
@@ -230,8 +246,6 @@ class PlayState extends FlxState
 					changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
 					
 					FlxTween.tween(timeBar, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
-
-					playFrame.endMicroGame();
 					
 					if(!wonMicrogame) {
 						removeLife();
@@ -239,13 +253,65 @@ class PlayState extends FlxState
 						addPoint();
 					}
 					
-					new FlxTimer().start(3.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+					if(checkSpeedUp()){
+						new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+						{
+							increaseSpeed();
+						});
+					}
+					
+					playFrame.endMicroGame();
+
+					new FlxTimer().start((checkSpeedUp() ? 6.5 : 3.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 					{
-						startMicrogame('test');
+						startMicrogame(pickMicrogame());
 					});
 				}});   
 			});
 		});
+	}
+	
+	function increaseSpeed():Void{
+		updateSpeed(.07);	
+		
+		var data = new AvatarData(curAvatar);
+		
+		var thing = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, data.color.getDarkened(.7));
+		thing.alpha = 0;
+		thing.camera = speedCam;
+		add(thing);
+
+		speedUps ++;
+		
+		speedSprite = new FlxSprite().loadGraphic( speedUps == 10 ? ('assets/images/speedupmax/' + curAvatar + '.png') : ('assets/images/speedup/' + curAvatar + '.png'));
+		speedSprite.camera = speedCam;
+		speedSprite.screenCenter();
+		speedSprite.x -= FlxG.width;
+		add(speedSprite);
+		
+		FlxTween.tween(thing, {alpha: .8}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+		FlxTween.tween(speedSprite, {x: speedSprite.x + FlxG.width}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+
+		new FlxTimer().start(4 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(thing, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut}); 
+			FlxTween.tween(speedSprite, {x: FlxG.width}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+
+			new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+			{
+				if(speedTween != null && speedTween.active){
+					speedTween.cancel();
+					speedTween.destroy();
+				}
+				thing.destroy();
+				speedSprite.destroy();
+				speedSprite = null;
+			});
+		});
+	}
+	
+	public static function checkSpeedUp():Bool{
+		return speedUps < 10 && wonMicrogame && curScore % 5 == 0;
 	}
 	
 	function removeLife():Void{
@@ -269,7 +335,9 @@ class PlayState extends FlxState
 	function addPoint():Void{
 		FlxG.sound.play('assets/sounds/win.ogg', .7);
 
-		lifeCounter.addScore(1);
+		curScore ++;
+		
+		lifeCounter.addScore();
 	}
 	
 	/**
@@ -323,6 +391,7 @@ class PlayState extends FlxState
 
 		lifeCounter.portrait.color = gameColor.getLightened(.2);
 		
+		if(speedSprite != null) speedSprite.color = gameColor;
 		for(i in lifeCounter.scoreSprites){
 			i.color = gameColor.getLightened(.2);
 		}
@@ -343,6 +412,19 @@ class PlayState extends FlxState
 	 */
 	function beatHit():Void{
 		lifeCounter.beatHit(BeatManager.globalCurBeat);
+		
+		if(speedSprite != null){
+			if(speedTween != null && speedTween.active){
+				speedTween.cancel();
+				speedTween.destroy();
+			}
+			
+			if(BeatManager.globalCurBeat % 2 == 0){
+				speedTween = FlxTween.tween(speedSprite.scale, {x: subtractiveSpeed, y: additiveSpeed}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+			} else {
+				speedTween = FlxTween.tween(speedSprite.scale, {x: additiveSpeed, y: subtractiveSpeed}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+			}
+		}
 	}
 		
 	function changeActiveMusic(name:String):Void{
@@ -355,6 +437,46 @@ class PlayState extends FlxState
 		FlxG.sound.playMusic('assets/music/' + name +  '.ogg', .3, true);
 		
 		FlxG.sound.music.time = ogTime;		
+	}
+	
+	var allMicrogames:Array<String> = [];
+	var availableMicrogames:Array<String> = [];
+	
+	function fillMicrogames():Void{
+		var data = Utilities.dataFromTextFile('assets/data/microgames.txt');
+
+		for (i in 0...data.length)
+		{
+			var stuff:Array<String> = data[i].split(":");
+
+			allMicrogames.push(stuff[0]);
+		}
+		
+		fillAvailableMicrogames();
+
+		trace('Filled microgames!! ' + allMicrogames);		
+	}
+	
+	function fillAvailableMicrogames():Void{
+		for(i in allMicrogames){
+			availableMicrogames.push(i);
+		}	
+	}
+	
+	function pickMicrogame():String{
+		var microgame = availableMicrogames[FlxG.random.int(0,availableMicrogames.length - 1)];
+		
+		trace('Picked microgame!!! ' + microgame);
+
+		availableMicrogames.remove(microgame);
+		
+		if(availableMicrogames.length <= 0){
+			trace('Seen all microgames!!');
+			
+			fillAvailableMicrogames();
+		}
+		
+		return microgame;
 	}
 	
 	function preloadThings():Void{

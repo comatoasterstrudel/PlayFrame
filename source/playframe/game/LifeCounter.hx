@@ -104,7 +104,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         namePlate.x = (FlxG.width - namePlate.width) - 62;
         add(namePlate);
         
-        addScore(0);
+        addScore();
     }
     
     override function update(elapsed:Float):Void{
@@ -193,16 +193,12 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
          
         portrait.animation.play('hp' + lifecount);
     }
-    
-    var score:Int = 0;
-    
+        
     public var scoreSprites:Array<FlxSprite> = [];
     var scoreSizeTweens:Array<FlxTween> = [];
     var scorePosTweens:Array<FlxTween> = [];
     
-    public function addScore(amount:Int):Void{
-        score += amount;
-        
+    public function addScore():Void{        
         for(i in scoreSprites){
             i.destroy();
         }
@@ -227,7 +223,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         
         scorePosTweens = [];
         
-        var wordArray = Utilities.stringToArray(Std.string(score));
+        var wordArray = Utilities.stringToArray(Std.string(PlayState.curScore));
         
         var iterator:Int = 0;
         
@@ -238,7 +234,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             add(spr);
             scoreSprites.push(spr);
             
-            if(amount > 0){
+            if(PlayState.curScore > 0){
                 var scaleAdditive:Float = 1.4;
                 
                 switch(lifecount){
