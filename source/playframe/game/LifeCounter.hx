@@ -58,6 +58,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         portrait.animation.addByPrefix('hp3', 'hp3', 1);
         portrait.animation.addByPrefix('hp2', 'hp2', 1);
         portrait.animation.addByPrefix('hp1', 'hp1', 1);
+        portrait.animation.addByPrefix('hp0', 'hp1', 1);
         portrait.animation.play('hp4');
         portrait.setGraphicSize(Std.int(portrait.width * .2));
         portrait.updateHitbox();
@@ -192,6 +193,17 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         }
          
         portrait.animation.play('hp' + lifecount);
+        
+        if(lifecount == 0){ //dont do tjhat anymore
+            for(i in scorePosTweens){
+                if(i != null){
+                    i.cancel();
+                    i.destroy();
+                }    
+            }
+            
+            scorePosTweens = [];
+        }
     }
         
     public var scoreSprites:Array<FlxSprite> = [];

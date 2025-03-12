@@ -113,6 +113,12 @@ class PlayState extends FlxState
 	
 	public static var speedUps:Int = 0;
 	
+	public static var gameOver:Bool = false;
+	
+	public static var finalSpeed:Float = 1;
+	
+	public static var lostMicrogames:Array<String> = [];
+	
 	override public function create()
 	{		 
 		super.create();
@@ -126,6 +132,8 @@ class PlayState extends FlxState
 		curMicrogame = '';
 		curScore = 0;
 		speedUps = 0;
+		gameOver = false;
+		lostMicrogames = [];
 		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
         add(bg);
@@ -250,19 +258,21 @@ class PlayState extends FlxState
 						addPoint();
 					}
 					
-					if(checkSpeedUp()){
-						new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
-						{
-							increaseSpeed();
-						});
-					}
-					
 					playFrame.endMicroGame();
 
-					new FlxTimer().start((checkSpeedUp() ? 6.5 : 3.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
-					{
-						startMicrogame(pickMicrogame());
-					});
+					if(!gameOver){
+						if(checkSpeedUp()){
+							new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+							{
+								increaseSpeed();
+							});
+						}
+							
+						new FlxTimer().start((checkSpeedUp() ? 6.5 : 3.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+						{
+							startMicrogame(pickMicrogame());
+						});	
+					}
 				}});   
 			});
 		});
@@ -312,6 +322,8 @@ class PlayState extends FlxState
 	}
 	
 	function removeLife():Void{
+		lostMicrogames.push(curMicrogame);
+		
 		var iconToShake:FlxSprite = null;
 	
 		for(i in lifeCounter.lives){
@@ -322,11 +334,51 @@ class PlayState extends FlxState
 		lifeCounter.updateLives(lives);		
 		FlxTween.shake(iconToShake, 0.1, .2, XY);
 		
-		changeActiveMusic('play' + lives);
+		if(lives > 0) changeActiveMusic('play' + lives);
 				
 		FlxG.sound.play('assets/sounds/loselife.ogg', 1);
 		
 		updateSpeed(0);
+		
+		if(lives <= 0){
+			endGame();
+		}
+	}
+	
+	var originalSpeed:Float = 1;
+	
+	var changePitch:Bool = true;
+	
+	function endGame():Void{
+		gameOver = true;
+				
+		finalSpeed = additiveSpeed;
+		
+		new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+		{
+			originalSpeed = additiveSpeed;
+			
+			FlxTween.num(additiveSpeed, 0, 3, {}, function(fun:Float):Void{
+				additiveSpeed = fun;
+				updateSpeed(0);
+			});
+			
+			FlxTween.num(subtractiveSpeed, 0, 3, {}, function(fun:Float):Void{
+				subtractiveSpeed = fun;
+				updateSpeed(0);
+			});
+					
+			var data = new AvatarData(curAvatar);
+			
+			changeBgColor(data.color.getDarkened(.6), 3);
+			
+			new FlxTimer().start(3.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+			{
+				persistentUpdate = true;
+				persistentDraw = true;
+				openSubState(new GameOverSubstate());
+			});	
+		});
 	}
 	
 	function addPoint():Void{
@@ -347,7 +399,7 @@ class PlayState extends FlxState
 		
 		playFrame.updateSpeed();
 		
-		FlxG.sound.music.pitch = additiveSpeed;
+		if(changePitch) FlxG.sound.music.pitch = additiveSpeed;
 						
 		bg.velocity.set(10 * additiveSpeed, 10 * additiveSpeed);
 		

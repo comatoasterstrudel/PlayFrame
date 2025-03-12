@@ -203,21 +203,23 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             baseCharacter.playAnim('win');
         }
         
-        var speedingUp = PlayState.checkSpeedUp();
+        if(!PlayState.gameOver){
+            var speedingUp = PlayState.checkSpeedUp();
         
-        new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
-        {
-            if(speedingUp){
-                baseCharacter.playAnim('scared', true);
-                
-                new FlxTimer().start(4 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
-                {
-                    baseCharacter.playAnim('normal', true);
-                });
-            } else {
-                baseCharacter.playAnim('normal', true);                
-            }
-        });
+            new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+            {
+                if(speedingUp){
+                    baseCharacter.playAnim('scared', true);
+                    
+                    new FlxTimer().start(4 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+                    {
+                        baseCharacter.playAnim('normal', true);
+                    });
+                } else {
+                    baseCharacter.playAnim('normal', true);                
+                }
+            });   
+        }
                 
         baseBackground.alpha = 0;
         

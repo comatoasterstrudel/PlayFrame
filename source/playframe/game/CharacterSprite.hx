@@ -53,7 +53,7 @@ class CharacterSprite extends FlxSprite
             i.frameRate = 3 * PlayState.additiveSpeed;
         }
         if(animation.curAnim != null){
-            animation.play(animation.curAnim.name, true);            
+            animation.play(animation.curAnim.name, false);            
         }
     }
 }
