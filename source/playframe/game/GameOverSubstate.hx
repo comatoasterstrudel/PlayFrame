@@ -23,7 +23,7 @@ class GameOverSubstate extends FlxSubState
         
         text = new FlxText();
         text.setFormat('assets/fonts/Andy.ttf', 55, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
-		text.text = 'Final Score - ' + PlayState.curScore + '\nFinal Speed - x' + PlayState.finalSpeed + ' (' + PlayState.speedUps + (PlayState.speedUps == 1 ? ' speed up)\n\nLost Microgames:' : ' speed ups) \n\nLost Microgames:');
+		text.text = 'Final Score - ' + PlayState.curScore + '\nFinal Speed - x' + PlayState.finalSpeed + ' (' + PlayState.speedUps + (PlayState.speedUps == 1 ? ' speed up)\n\nFailed Microgames:' : ' speed ups) \n\nFailed Microgames:');
         for(i in PlayState.lostMicrogames){
             var data = new MicrogameData(i);
             text.text += '\n' + data.text;
