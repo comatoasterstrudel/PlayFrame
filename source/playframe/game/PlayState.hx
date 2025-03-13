@@ -98,25 +98,59 @@ class PlayState extends FlxState
 	 */
 	public static var subtractiveSpeed:Float = 1;
 		
+	/**
+	 * the current microgame
+	 */
 	public static var curMicrogame:String = '';
 	
+	/**
+	 * whether you have won the current microgame
+	 */
 	public static var wonMicrogame:Bool = true;
 	
+	/**
+	 * the value used for the time bar
+	 */
 	var timeLeft:Float = 1;
 	
+	/**
+	 * the bar that shows how long you have left during a microgame
+	 */
 	var timeBar:FlxBar;
 	
+	/**
+	 * your current score
+	 */
 	public static var curScore:Int = 1;
 	
+	/**
+	 * the sprite that appears when the game speeds up
+	 */
 	var speedSprite:FlxSprite;
+	
+	/**
+	 * the tween that squeezes the speedSprite
+	 */
 	var speedTween:FlxTween;
 	
+	/**
+	 * how many times the game has sped up
+	 */
 	public static var speedUps:Int = 0;
 	
+	/**
+	 * is the game over?
+	 */
 	public static var gameOver:Bool = false;
 	
+	/**
+	 * the final speed before the game ended
+	 */
 	public static var finalSpeed:Float = 1;
 	
+	/**
+	 * which microgames were lost
+	 */
 	public static var lostMicrogames:Array<String> = [];
 	
 	override public function create()
