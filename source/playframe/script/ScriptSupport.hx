@@ -90,6 +90,7 @@ class ScriptSupport {
 		script.setVariable("PlayState", PlayState);
 		script.setVariable("Controls", Controls);
 		script.setVariable("FlxAtlasFrames", FlxAtlasFrames);
+		script.setVariable("FlxCameraFollowStyle", FlxCameraFollowStyle);
 
 		script.mod = mod;
 	}

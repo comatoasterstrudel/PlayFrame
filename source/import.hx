@@ -1,3 +1,4 @@
+import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxGame;

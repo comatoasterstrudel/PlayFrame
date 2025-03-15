@@ -13,6 +13,11 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     var frameCamera:FlxCamera;
     
     /**
+     * the camera the frame is displayed on!!
+     */
+     var topCamera:FlxCamera;
+     
+    /**
      * how wide the frames should be
      */
     public static final frameWidth:Int = 900;
@@ -46,6 +51,10 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 		FlxG.cameras.add(frameCamera, false);
         
         frameHeight = frameCamera.height;
+        
+        topCamera = new FlxCamera((FlxG.width / 2 - frameWidth / 2) + positionOffset, PlayState.scoreBgHeight + frameMargin, frameWidth, (FlxG.height - PlayState.scoreBgHeight) - (frameMargin * 2));
+		topCamera.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(topCamera, false);
         
         baseSceneGroup = new FlxTypedGroup<FlxSprite>();        
         microgameGroup = new FlxTypedGroup<FlxSprite>();        
@@ -88,6 +97,10 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         for(i in groups){
             add(i);
         }
+        
+        microgameGroup.camera = frameCamera;
+        baseSceneGroup.camera = topCamera;
+        transitionGroup.camera = topCamera;
     }
     
     var soundGroup:Array<FlxSound> = [];
@@ -177,6 +190,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 
         microgameScript.setVariable("frameWidth", frameWidth);
         microgameScript.setVariable("frameHeight", frameHeight);
+        microgameScript.setVariable("frameCamera", frameCamera);
 
         microgameScript.setVariable("playSound", playSound);
 
@@ -231,6 +245,8 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             
             microgameScript.destroy();
             microgameScript = null;
+            
+            frameCamera.scroll.set(0,0);
             
             trace('Destroyed microgame!!! ' + PlayState.curMicrogame);
         });
