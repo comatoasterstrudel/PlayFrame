@@ -31,27 +31,29 @@ class Controls {
      */
     public static function getControl(name:String, type:String):Bool{
         var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
-        
-        if(type == 'HOLD'){
-            for(control in keyboardControls.get(name)){
-                if(FlxG.keys.anyPressed([control])) return true;
-            }    
-            
-            if(gamepad != null){
-                for(control in gamepadControls.get(name)){
-                    if(gamepad.anyPressed([control])) return true;
-                }   
-            }
-        } else if(type == 'RELEASE'){
-            for(control in keyboardControls.get(name)){
-                if(FlxG.keys.anyJustPressed([control])) return true;
-            }   
-            
-            if(gamepad != null){
-                for(control in gamepadControls.get(name)){
-                    if(gamepad.anyJustPressed([control])) return true;
-                }   
-            }
+
+        switch(type)
+        {
+                case 'HOLD':
+                    for(control in keyboardControls.get(name)){
+                        if(FlxG.keys.anyPressed([control])) return true;
+                    }    
+                    
+                    if(gamepad != null){
+                        for(control in gamepadControls.get(name)){
+                            if(gamepad.anyPressed([control])) return true;
+                        }   
+                    }
+                case 'RELEASE':
+                    for(control in keyboardControls.get(name)){
+                        if(FlxG.keys.anyJustPressed([control])) return true;
+                    }   
+                    
+                    if(gamepad != null){
+                        for(control in gamepadControls.get(name)){
+                            if(gamepad.anyJustPressed([control])) return true;
+                        }   
+                    }
         }
         
         return false;
