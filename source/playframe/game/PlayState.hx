@@ -162,6 +162,7 @@ class PlayState extends FlxState
 		
 		additiveSpeed = 1;
 		subtractiveSpeed = 1;
+				
 		lives = maxLives;
 		curMicrogame = '';
 		curScore = 0;

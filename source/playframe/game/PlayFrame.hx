@@ -67,6 +67,8 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
+        FlxG.worldBounds.set(frameCamera.scroll.x, frameCamera.scroll.y, FlxG.width, FlxG.height); //FUCK EVERYTHING
+
         if(microgameScript != null) {
             microgameScript.executeFunc('update', [elapsed]);
         }
