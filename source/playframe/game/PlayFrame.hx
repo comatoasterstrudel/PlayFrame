@@ -139,6 +139,9 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     }
     
     public function startMicroGame(name:String):Void{
+        frameCamera.scroll.set(0,0);
+        frameCamera.follow(null);
+        
         reOrderGroups([microgameGroup, baseSceneGroup, transitionGroup]);
         
         var data = new MicrogameData(name);

@@ -115,6 +115,7 @@ function update(elapsed:Float){
         if(Controls.getControl('UP', 'RELEASE') && playerhitbox.isTouching(0x1000)){
             squishLog(false);
             playerhitbox.velocity.y = -300;
+            playSound('assets/sounds/logjump.ogg', .7);
         }
         
         if(FlxG.overlap(playerhitbox, doorhitbox) && playerhitbox.isTouching(0x1000)){
@@ -129,6 +130,7 @@ function update(elapsed:Float){
     
     if(!grounded && playerhitbox.isTouching(0x1000)){
         squishLog(true); //just landed
+        playSound('assets/sounds/logland.ogg', .7);
     }
     
     if(playerhitbox.x < -60 || playerhitbox.x > 850) playerhitbox.x = previousX;
@@ -159,6 +161,8 @@ function win():Void{
 
     cutsceneTimers.push(new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 	{
+        playSound('assets/sounds/logdoor1.ogg', 1);
+
 		door.animation.play('open');
         cutsceneTweens.push(FlxTween.shake(door, 0.01, .2 * PlayState.subtractiveSpeed, 0x01));
         
@@ -168,12 +172,14 @@ function win():Void{
         {
             cutsceneTweens.push(FlxTween.shake(door, 0.01, .2 * PlayState.subtractiveSpeed, 0x01));
             door.animation.play('closed');
+            playSound('assets/sounds/logdoor2.ogg', 1);
         }));
 	}));
 }
 
 function fall():Void{
     fell = true;
+    playSound('assets/sounds/logfall.ogg', .7);
 }
 
 function squishLog(x:Bool):Void{
@@ -193,19 +199,6 @@ function squishLog(x:Bool):Void{
 
 function endMicrogame():Void{ 
     allowControl = false;
-}
-
-function destroyMicrogame():Void{
-    bg.destroy();
-    ground.destroy();
-    door.destroy();
-    loooogi.destroy();
-    
-    for(i in hitboxes){
-        i.destroy();
-    }
-    playerhitbox.destroy();
-    doorhitbox.destroy();
     
     for(i in cutsceneTimers){
         if(i != null && i.active){
@@ -220,4 +213,17 @@ function destroyMicrogame():Void{
             i.destroy();
         }
     }
+}
+
+function destroyMicrogame():Void{
+    bg.destroy();
+    ground.destroy();
+    door.destroy();
+    loooogi.destroy();
+    
+    for(i in hitboxes){
+        i.destroy();
+    }
+    playerhitbox.destroy();
+    doorhitbox.destroy();
 }
