@@ -1,4 +1,4 @@
-package playframe.menu;
+package playframe.menu.config;
 
 class CharacterSelectSprite extends FlxSprite
 {

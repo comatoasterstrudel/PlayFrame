@@ -245,7 +245,7 @@ class PlayState extends FlxState
 		beatManager.update(elapsed);
 		
 		if(Controls.getControl('BACK', 'RELEASE')){
-			FlxG.switchState(new CharacterSelectState());	
+			FlxG.switchState(new MainMenuState());	
 			FlxG.sound.music.stop();
 			FlxG.sound.music.time = 0;
 		}

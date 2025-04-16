@@ -18,7 +18,7 @@ class Main extends Sprite
 		return;
 		#end
 		
-		addChild(new FlxGame(0, 0, CharacterSelectState));
+		addChild(new FlxGame(0, 0, MainMenuState));
 		
 		#if thirtyfps
 		FlxG.drawFramerate = 30;

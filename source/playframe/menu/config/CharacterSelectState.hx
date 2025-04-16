@@ -1,4 +1,4 @@
-package playframe.menu;
+package playframe.menu.config;
 
 /**
  * the menu where you pick a character to play as
@@ -78,7 +78,7 @@ class CharacterSelectState extends FlxState
 		
 		if(Controls.getControl('ACCEPT', 'RELEASE')){
 			PlayState.curAvatar = avatars[curSelected];
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(new MainMenuState());
 		}
 	}
 	
