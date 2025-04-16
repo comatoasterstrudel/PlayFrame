@@ -26,5 +26,8 @@ class Main extends Sprite
 		#end
 		
 		FlxG.mouse.visible = false;
+		
+		DiscordClient.initialize();
+		DiscordClient.changePresence('Having fun and playing with my friends', 'Having fun and playing with my friends', 'Having fun and playing with my friends');
 	}
 }

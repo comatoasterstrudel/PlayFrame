@@ -1,3 +1,5 @@
+import Sys.sleep;
+import discord_rpc.DiscordRpc;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -41,6 +43,8 @@ import playframe.game.PlayFrame;
 import playframe.game.PlayState;
 import playframe.helpers.BeatManager;
 import playframe.helpers.Controls;
+import playframe.helpers.Discord.DiscordClient;
+import playframe.helpers.Discord;
 import playframe.helpers.Utilities;
 import playframe.json.AvatarData;
 import playframe.json.MicrogameData;
