@@ -164,6 +164,13 @@ class PlayState extends FlxState
 		subtractiveSpeed = 1;
 				
 		lives = maxLives;
+		maxLives = 4;
+		
+		if(curAvatar == 'trifecta'){
+			lives ++;	
+			maxLives ++;
+		}
+		
 		curMicrogame = '';
 		curScore = 0;
 		speedUps = 0;
@@ -280,7 +287,13 @@ class PlayState extends FlxState
 			
 			new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 			{				
-				FlxTween.tween(this, {timeLeft: 0}, data.timer * PlayState.subtractiveSpeed, {onComplete: function(f):Void{
+				var thetime = data.timer * PlayState.subtractiveSpeed;
+				
+				if(curAvatar == '8head'){
+					thetime *= 1.5;	
+				}
+				
+				FlxTween.tween(this, {timeLeft: 0}, thetime, {onComplete: function(f):Void{
 					var data = new AvatarData(curAvatar);
 
 					changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
@@ -314,7 +327,11 @@ class PlayState extends FlxState
 	}
 	
 	function increaseSpeed():Void{
-		updateSpeed(.07);	
+		if(curAvatar == 'gerbo'){
+			updateSpeed(.05);	
+		} else {
+			updateSpeed(.07);				
+		}
 		
 		var data = new AvatarData(curAvatar);
 		
@@ -365,7 +382,7 @@ class PlayState extends FlxState
 			if(i.ID == lives) iconToShake = i;	
 		}
 
-		lives -= 4;
+		lives -= 1;
 		lifeCounter.updateLives(lives);		
 		FlxTween.shake(iconToShake, 0.1, .2, XY);
 		

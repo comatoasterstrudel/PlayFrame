@@ -1,4 +1,5 @@
 {
     "name": "Hexie",
-    "color": [200, 84, 255]
+    "color": [200, 84, 255],
+    "abilityText": "Nothing"
 }

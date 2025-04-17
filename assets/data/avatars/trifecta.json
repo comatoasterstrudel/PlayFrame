@@ -1,4 +1,5 @@
 {
     "name": "Trifecta",
-    "color": [0, 38, 255]
+    "color": [0, 38, 255],
+    "abilityText": "Trifecta gains an extra life."
 }

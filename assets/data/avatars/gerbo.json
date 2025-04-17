@@ -1,4 +1,5 @@
 {
     "name": "Gerbo",
-    "color": [155, 170, 255]
+    "color": [155, 170, 255],
+    "abilityText": "Gerbos speed increases slower than others."
 }

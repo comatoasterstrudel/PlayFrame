@@ -32,6 +32,8 @@ class CharacterSelectState extends FlxState
 	 */
 	public static var curSelected:Int = 0;
 	
+	var abilityText:FlxText;
+	
 	override public function create()
 	{		 
 		super.create();
@@ -60,6 +62,11 @@ class CharacterSelectState extends FlxState
 		
 		namePlate = new FlxSprite();
 		add(namePlate);
+		
+		abilityText = new FlxText();
+        abilityText.setFormat('assets/fonts/Andy.ttf', 40, 0xFFFFFF, CENTER); 
+		abilityText.screenCenter();
+		add(abilityText);
 		
 		changeSelection();
 	}
@@ -114,6 +121,11 @@ class CharacterSelectState extends FlxState
 		namePlate.y = 20;
 		namePlate.screenCenter(X);
 		namePlate.color = data.color;
+		
+		abilityText.color = data.color;
+		abilityText.text = data.abilityText;
+		abilityText.screenCenter();
+		abilityText.y -= 100;
 		
 		changeBgColor(data.color.getDarkened(.6));
 	}

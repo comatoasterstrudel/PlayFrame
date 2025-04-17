@@ -59,6 +59,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         portrait.animation.addByPrefix('hp2', 'hp2', 1);
         portrait.animation.addByPrefix('hp1', 'hp1', 1);
         portrait.animation.addByPrefix('hp0', 'hp1', 1);
+        if(PlayState.curAvatar == 'trifecta') portrait.animation.addByPrefix('hp5', 'hp5', 1);
         portrait.animation.play('hp4');
         portrait.setGraphicSize(Std.int(portrait.width * .2));
         portrait.updateHitbox();
@@ -82,7 +83,7 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             lives.push(lifeIcon);
         }
         
-        Utilities.centerGroup(null, lives, 20);
+        Utilities.centerGroup(null, lives, PlayState.curAvatar == 'trifecta' ? 15 : 20);
         
         portrait.x -= 200;
         
@@ -91,7 +92,8 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         var iterator = 1;
         
         for(i in lives){
-            i.x += 100;
+            i.x += PlayState.curAvatar == 'trifecta' ? 80 : 100;
+            
             
             i.ID = iterator;
             

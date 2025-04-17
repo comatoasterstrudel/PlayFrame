@@ -1,4 +1,5 @@
 {
     "name": "8head",
-    "color": [49, 165, 0]
+    "color": [49, 165, 0],
+    "abilityText": "8head gets a longer timer than others."
 }
