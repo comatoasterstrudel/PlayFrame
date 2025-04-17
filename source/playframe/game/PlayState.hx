@@ -365,7 +365,7 @@ class PlayState extends FlxState
 			if(i.ID == lives) iconToShake = i;	
 		}
 
-		lives --;
+		lives -= 4;
 		lifeCounter.updateLives(lives);		
 		FlxTween.shake(iconToShake, 0.1, .2, XY);
 		
