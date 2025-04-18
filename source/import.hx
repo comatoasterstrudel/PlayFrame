@@ -45,6 +45,7 @@ import playframe.helpers.BeatManager;
 import playframe.helpers.Controls;
 import playframe.helpers.Discord.DiscordClient;
 import playframe.helpers.Discord;
+import playframe.helpers.SaveData;
 import playframe.helpers.Utilities;
 import playframe.json.AvatarData;
 import playframe.json.MicrogameData;
@@ -57,5 +58,6 @@ import playframe.script.HaxeScript;
 import playframe.script.ScriptSupport;
 import sys.FileSystem;
 import sys.io.File;
+import textbox.Textbox;
 
 using StringTools;

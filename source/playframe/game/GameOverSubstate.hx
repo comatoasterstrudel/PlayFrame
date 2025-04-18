@@ -9,9 +9,11 @@ class GameOverSubstate extends FlxSubState
     
     var char:FlxSprite;
     
+    var textbox:Textbox;
+    
     public function new (){
         super();
-                
+        
         theCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 		theCam.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(theCam, false);
@@ -36,6 +38,19 @@ class GameOverSubstate extends FlxSubState
         text.camera = theCam;
 		add(text);
         
+        if(PlayState.curScore > SaveData.highscores.get(PlayState.curAvatar)){
+            trace('New Highscore! ' + PlayState.curScore);  
+            
+            SaveData.highscores.set(PlayState.curAvatar, PlayState.curScore);
+            SaveData.save();
+            
+            textbox = new Textbox(0, 0, {fontSize: 50, font: 'assets/fonts/andy.ttf', charactersPerSecond: 15});
+            textbox.setText('@011001500@03331640ANEW  HIGHSCORE!!@010@030');
+            textbox.bring();
+            textbox.camera = theCam;
+            add(textbox);
+        }
+            
         char = new FlxSprite().loadGraphic('assets/images/gameover/' + PlayState.curAvatar + '.png');
         char.setGraphicSize(Std.int(char.width * .8));
         char.updateHitbox();
@@ -52,6 +67,19 @@ class GameOverSubstate extends FlxSubState
         fadeIn();
     }
     
+    override function update(elapsed:Float):Void{
+        super.update(elapsed);
+        
+        if(textbox != null){
+            var sprs = [];
+            
+            textbox.forEachAlive(function(spr:FlxSprite):Void{
+                spr.y = text.y - 100;
+                sprs.push(spr);
+            });
+            Utilities.centerGroup(null, sprs, 10, text.x + text.width / 2);
+        }
+    }
     function fadeIn():Void{
         FlxTween.tween(bg, {alpha: .9}, 1.5, {ease: FlxEase.quartOut});
         FlxTween.tween(text, {alpha: 1}, 1.5, {ease: FlxEase.quartOut});      

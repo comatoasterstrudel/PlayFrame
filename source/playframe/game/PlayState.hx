@@ -162,9 +162,9 @@ class PlayState extends FlxState
 		
 		additiveSpeed = 1;
 		subtractiveSpeed = 1;
-				
-		lives = maxLives;
+
 		maxLives = 4;
+		lives = maxLives;
 		
 		if(curAvatar == 'trifecta'){
 			lives ++;	
@@ -382,7 +382,11 @@ class PlayState extends FlxState
 			if(i.ID == lives) iconToShake = i;	
 		}
 
+		#if instaKill
+		lives -= 3;
+		#end
 		lives -= 1;
+		
 		lifeCounter.updateLives(lives);		
 		FlxTween.shake(iconToShake, 0.1, .2, XY);
 		

@@ -85,6 +85,7 @@ class CharacterSelectState extends FlxState
 		
 		if(Controls.getControl('ACCEPT', 'RELEASE')){
 			PlayState.curAvatar = avatars[curSelected];
+			SaveData.save();
 			FlxG.switchState(new MainMenuState());
 		}
 	}

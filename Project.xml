@@ -4,7 +4,7 @@
 
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="PlayFrame" file="PlayFrame" main="Main" version="0.0.1" company="comatoasterstrudel" />
+	<app title="PlayFrame" file="PlayFrame" main="Main" version="0.0.1" company="comatoasterstrudel_hexie_playergasa4real" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -38,6 +38,7 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="discord_rpc"/> 
+	<haxelib name="textbox"/>
 
 	<!--In case you want to use the addons package-->
 	<!--<haxelib name="flixel-addons" />-->
