@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="trifecta.png">
+<SubTexture name="intro0000" x="301" y="771" width="311" height="752" frameX="-269" frameY="-20" frameWidth="768" frameHeight="768" />
+<SubTexture name="intro0001" x="0" y="771" width="301" height="753" frameX="-272" frameY="-19" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0000" x="1270" y="0" width="530" height="763" frameX="-206" frameY="-9" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0001" x="717" y="0" width="553" height="766" frameX="-203" frameY="-6" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0000" x="1287" y="771" width="497" height="529" frameX="-175" frameY="-243" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0001" x="1800" y="0" width="523" height="524" frameX="-159" frameY="-248" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0000" x="0" y="0" width="717" height="771" frameX="-13" frameY="-1" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0001" x="612" y="771" width="675" height="701" frameX="-47" frameY="-71" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

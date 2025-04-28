@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="8head.png">
+<SubTexture name="intro0000" x="480" y="0" width="493" height="758" frameX="-179" frameY="-14" frameWidth="768" frameHeight="768" />
+<SubTexture name="intro0001" x="0" y="0" width="480" height="759" frameX="-186" frameY="-13" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0000" x="973" y="0" width="649" height="747" frameX="-109" frameY="-25" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0001" x="0" y="759" width="633" height="739" frameX="-119" frameY="-33" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0000" x="1622" y="729" width="617" height="717" frameX="-64" frameY="-55" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0001" x="0" y="1498" width="697" height="616" frameX="-34" frameY="-156" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0000" x="633" y="759" width="649" height="729" frameX="-89" frameY="-43" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0001" x="1622" y="0" width="644" height="729" frameX="-91" frameY="-43" frameWidth="768" frameHeight="768" />
+</TextureAtlas>
