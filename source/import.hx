@@ -53,6 +53,7 @@ import playframe.menu.config.CharacterSelectSprite;
 import playframe.menu.config.CharacterSelectState;
 import playframe.menu.main.MainMenuButton;
 import playframe.menu.main.MainMenuState;
+import playframe.menu.score.ScoresState;
 import playframe.script.HScript;
 import playframe.script.HaxeScript;
 import playframe.script.ScriptSupport;

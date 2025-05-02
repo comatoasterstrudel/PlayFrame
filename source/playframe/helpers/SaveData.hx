@@ -9,12 +9,9 @@ class SaveData{
     ];
     
     public static function init():Void{
-        FlxG.save.bind('playframe');    
     }
     
-    public static function load():Void{
-        FlxG.save.bind('playframe');    
-        
+    public static function load():Void{        
         if(FlxG.save.data.savedAvatar != null) {
             PlayState.curAvatar = FlxG.save.data.savedAvatar;
         } else {
@@ -36,8 +33,6 @@ class SaveData{
     }
     
     public static function save():Void{
-        FlxG.save.bind('playframe');    
-
         FlxG.save.data.savedAvatar = PlayState.curAvatar;
     
         FlxG.save.data.highscores = highscores;

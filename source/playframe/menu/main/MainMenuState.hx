@@ -20,7 +20,9 @@ class MainMenuState extends FlxState
 	 */
 	public static var curSelected:Int = 0;
 	
-	var options:Array<String> = ['play', 'config', 'leave'];
+	public static var canSelect:Bool = true;
+	
+	var options:Array<String> = ['play', 'config', 'scores', 'leave'];
 	
 	var buttons:FlxTypedGroup<MainMenuButton>;
 	
@@ -46,6 +48,11 @@ class MainMenuState extends FlxState
 	override public function create()
 	{		 
 		super.create();
+		
+		persistentUpdate = true;
+		persistentDraw = true;
+		
+		canSelect = true;
 		
 		mainCamera = new FlxCamera();
 		mainCamera.bgColor.alpha = 0;
@@ -99,23 +106,27 @@ class MainMenuState extends FlxState
 	{
 		super.update(elapsed);
 		
-		if(Controls.getControl('LEFT', 'RELEASE')){
-			changeSelection(-1);
-		}
-		
-		if(Controls.getControl('RIGHT', 'RELEASE')){
-			changeSelection(1);
-		}
-		
-		if(Controls.getControl('ACCEPT', 'RELEASE')){
-			switch(options[curSelected]){
-				case 'play':
-					FlxG.switchState(new PlayState());
-				case 'config':
-					FlxG.switchState(new CharacterSelectState());
-				case 'leave':
-					Sys.exit(1);
+		if(canSelect){
+			if(Controls.getControl('LEFT', 'RELEASE')){
+				changeSelection(-1);
 			}
+			
+			if(Controls.getControl('RIGHT', 'RELEASE')){
+				changeSelection(1);
+			}
+			
+			if(Controls.getControl('ACCEPT', 'RELEASE')){
+				switch(options[curSelected]){
+					case 'play':
+						FlxG.switchState(new PlayState());
+					case 'config':
+						openSubState(new CharacterSelectState());
+					case 'scores':
+						openSubState(new ScoresState());
+					case 'leave':
+						Sys.exit(1);
+				}
+			}	
 		}
 		
 		logo.color = bg.color;

@@ -3,7 +3,7 @@ package playframe.menu.config;
 /**
  * the menu where you pick a character to play as
  */
-class CharacterSelectState extends FlxState 
+class CharacterSelectState extends FlxSubState 
 {	
 	/**
 	 * the scrolling bg
@@ -32,12 +32,18 @@ class CharacterSelectState extends FlxState
 	 */
 	public static var curSelected:Int = 0;
 	
+	var internalCurSelected:Int = 0;
+	
 	var abilityText:FlxText;
+	
+	var canSelect:Bool = false;
 	
 	override public function create()
 	{		 
 		super.create();
-	
+
+		MainMenuState.canSelect = false;
+		
 		var data = Utilities.dataFromTextFile('assets/data/avatars.txt');
 
 		for (i in 0...data.length)
@@ -69,24 +75,90 @@ class CharacterSelectState extends FlxState
 		add(abilityText);
 		
 		changeSelection();
+		
+		for(i in this.members){
+			try {
+				Reflect.setProperty(i, 'alpha', 0);
+				try {
+					FlxTween.tween(i, {alpha: 1}, .5, {ease: FlxEase.quartOut, onComplete: function(F):Void{
+						canSelect = true;
+					}});	
+				} catch(e:Dynamic) {
+					trace("Failed to access or tween alpha: " + e);
+				}
+			} catch (e:Dynamic) {
+				trace("Failed to access or tween alpha: " + e);
+			}
+		}
+		
+		for(i in avatarSprites.members){
+			i.followTarget = false;
+			if(i.ID != curSelected){
+				i.scale.set(0.3, 0.3);
+				i.updateHitbox();	
+			}
+			
+			i.y = FlxG.height - i.height;            
+
+			var ogY = i.y;
+				
+			i.y = FlxG.height;
+			FlxTween.tween(i, {y: ogY}, .5, {ease: FlxEase.quartOut, onComplete: (function(f):Void{
+				i.followTarget = true;
+			})});
+		}
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
 		
-		if(Controls.getControl('LEFT', 'RELEASE')){
-			changeSelection(-1);
+		if(canSelect){
+			if(Controls.getControl('LEFT', 'RELEASE')){
+				changeSelection(-1);
+			}
+			
+			if(Controls.getControl('RIGHT', 'RELEASE')){
+				changeSelection(1);
+			}
+			
+			if(Controls.getControl('ACCEPT', 'RELEASE')){
+				select();
+			}
 		}
 		
-		if(Controls.getControl('RIGHT', 'RELEASE')){
-			changeSelection(1);
+		internalCurSelected = curSelected;
+	}
+	
+	function select():Void{
+		canSelect = false;
+		PlayState.curAvatar = avatars[curSelected];
+		SaveData.save();
+		for(i in this.members){
+			try {
+				Reflect.setProperty(i, 'alpha', 1);
+				try {
+					FlxTween.tween(i, {alpha: 0}, .5, {ease: FlxEase.quartOut, onComplete: function(F):Void{
+						close();
+						MainMenuState.canSelect = true;
+					}});	
+				} catch(e:Dynamic) {
+					trace("Failed to access or tween alpha: " + e);
+				}
+			} catch (e:Dynamic) {
+				trace("Failed to access or tween alpha: " + e);
+			}
 		}
 		
-		if(Controls.getControl('ACCEPT', 'RELEASE')){
-			PlayState.curAvatar = avatars[curSelected];
-			SaveData.save();
-			FlxG.switchState(new MainMenuState());
+		for(i in avatarSprites.members){
+			if(i.ID == curSelected){
+				i.targetScaleX = .3;
+				i.targetScaleY = 2;
+				FlxTween.tween(i, {alpha: 0}, .5, {ease: FlxEase.quartOut});
+			} else {
+				i.followTarget = false;
+				FlxTween.tween(i, {y: FlxG.height}, .5, {ease: FlxEase.quartOut});
+			}
 		}
 	}
 	

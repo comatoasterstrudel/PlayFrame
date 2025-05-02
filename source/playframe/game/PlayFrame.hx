@@ -71,7 +71,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 
         if(microgameScript != null) {
             microgameScript.executeFunc('update', [elapsed]);
-        }
+        }        
     }
     
     public function updateSpeed():Void{
