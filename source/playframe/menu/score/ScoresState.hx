@@ -2,6 +2,13 @@ package playframe.menu.score;
 
 class ScoresState extends CharacterSelectState
 {
+	override function formList():Void{
+		super.formList();
+		if(!SaveData.checkIllbertUnlocked()){
+			avatars.remove('illbert');
+		}
+	}
+	
 	override function select():Void{
 		return; // no selecting you stupid mother fucker
 	}

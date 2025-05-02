@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="hexie.png">
+	<!-- Created using the Spritesheet and XML generator -->
+	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
+	<SubTexture name="intro0000" x="1469" y="0" width="450" height="585" frameX="-205" frameY="-185" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="intro0001" x="0" y="1135" width="400" height="590" frameX="-204" frameY="-180" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="lose0000" x="0" y="610" width="508" height="525" frameX="-129" frameY="-245" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="lose0001" x="968" y="0" width="501" height="547" frameX="-121" frameY="-223" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="scared0000" x="1919" y="0" width="274" height="574" frameX="-260" frameY="-196" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="scared0001" x="400" y="1135" width="291" height="564" frameX="-252" frameY="-206" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="win0000" x="0" y="0" width="489" height="610" frameX="2" frameY="-160" frameWidth="768" frameHeight="768"/>
+	<SubTexture name="win0001" x="489" y="0" width="479" height="610" frameX="-291" frameY="-158" frameWidth="768" frameHeight="768"/>
+</TextureAtlas>

@@ -44,14 +44,7 @@ class CharacterSelectState extends FlxSubState
 
 		MainMenuState.canSelect = false;
 		
-		var data = Utilities.dataFromTextFile('assets/data/avatars.txt');
-
-		for (i in 0...data.length)
-		{
-			var stuff:Array<String> = data[i].split(":");
-
-			avatars.push(stuff[0]);
-		}
+		formList();
 						
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
 		bg.velocity.set(10, 10);
@@ -61,7 +54,13 @@ class CharacterSelectState extends FlxSubState
 		add(avatarSprites);
 		
 		for(i in 0...avatars.length){
-			var portrait = new CharacterSelectSprite(avatars[i]);
+			var portrait:CharacterSelectSprite;
+			
+			if(!SaveData.checkIllbertUnlocked() && avatars[i] == 'illbert'){
+				portrait = new CharacterSelectSprite('illbertlocked');
+			} else {
+				portrait = new CharacterSelectSprite(avatars[i]);				
+			}
 			portrait.ID = i;
 			avatarSprites.add(portrait);
 		}
@@ -84,10 +83,8 @@ class CharacterSelectState extends FlxSubState
 						canSelect = true;
 					}});	
 				} catch(e:Dynamic) {
-					trace("Failed to access or tween alpha: " + e);
 				}
 			} catch (e:Dynamic) {
-				trace("Failed to access or tween alpha: " + e);
 			}
 		}
 		
@@ -131,7 +128,15 @@ class CharacterSelectState extends FlxSubState
 	}
 	
 	function select():Void{
+		if(avatars[curSelected] == 'illbert' && !SaveData.checkIllbertUnlocked()) {
+			
+			return;
+		}
+		
 		canSelect = false;
+		if(PlayState.curAvatar != 'illbert' && avatars[curSelected] == 'illbert' || PlayState.curAvatar == 'illbert' && avatars[curSelected] != 'illbert'){
+			MainMenuState.refresh = true;
+		}
 		PlayState.curAvatar = avatars[curSelected];
 		SaveData.save();
 		for(i in this.members){
@@ -143,10 +148,8 @@ class CharacterSelectState extends FlxSubState
 						MainMenuState.canSelect = true;
 					}});	
 				} catch(e:Dynamic) {
-					trace("Failed to access or tween alpha: " + e);
 				}
 			} catch (e:Dynamic) {
-				trace("Failed to access or tween alpha: " + e);
 			}
 		}
 		
@@ -187,9 +190,13 @@ class CharacterSelectState extends FlxSubState
 			}
 		});	
 
-		var data = new AvatarData(avatars[curSelected]);
+		var thechar = avatars[curSelected];
+		
+		if(avatars[curSelected] == 'illbert' && !SaveData.checkIllbertUnlocked()) thechar = 'illbertlocked';
+		
+		var data = new AvatarData(thechar);
 				
-		namePlate.loadGraphic('assets/images/nameplates/' + avatars[curSelected] + '.png');
+		namePlate.loadGraphic('assets/images/nameplates/' + thechar + '.png');
 		namePlate.scale.set(.8, .8);
 		namePlate.y = 20;
 		namePlate.screenCenter(X);
@@ -214,5 +221,16 @@ class CharacterSelectState extends FlxSubState
 		}
 		
 		colorTween = FlxTween.color(bg, .3, bg.color, color);
+	}
+	
+	function formList():Void{
+		var data = Utilities.dataFromTextFile('assets/data/avatars.txt');
+
+		for (i in 0...data.length)
+		{
+			var stuff:Array<String> = data[i].split(":");
+
+			avatars.push(stuff[0]);
+		}
 	}
 }

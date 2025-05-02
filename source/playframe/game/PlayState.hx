@@ -169,7 +169,11 @@ class PlayState extends FlxState
 		if(curAvatar == 'trifecta'){
 			lives ++;	
 			maxLives ++;
+		} else if(curAvatar == 'illbert'){
+			lives = 1;
+			maxLives = 1;
 		}
+		
 		
 		curMicrogame = '';
 		curScore = 0;
@@ -232,7 +236,11 @@ class PlayState extends FlxState
 			startMicrogame(pickMicrogame());
 		});
 		
-		changeActiveMusic('play4');
+		if(curAvatar == 'illbert'){
+			changeActiveMusic('illbert');
+		} else {
+			changeActiveMusic('play4');			
+		}
 		
 		beatManager = new BeatManager(90, beatHit);
 		
@@ -245,6 +253,8 @@ class PlayState extends FlxState
 		updateSpeed(0);
 	}
 
+	var fucked:Bool = false;
+	
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -265,8 +275,19 @@ class PlayState extends FlxState
 		if(FlxG.keys.justReleased.SIX){
 			updateSpeed(.1);
 		}
-		#end
 		
+		if(FlxG.keys.justReleased.FIVE){
+			PlayState.additiveSpeed = .5;
+			PlayState.subtractiveSpeed = 2;
+			FlxTween.tween(PlayState, {additiveSpeed: 2, subtractiveSpeed: .5}, 4, {type: PINGPONG, ease: FlxEase.quartOut});   
+			fucked = true;
+		}
+		
+		if(fucked){
+			if(changePitch) FlxG.sound.music.pitch = additiveSpeed;
+		}
+		#end
+
 		updateColors();
 	}
 	
@@ -291,6 +312,8 @@ class PlayState extends FlxState
 				
 				if(curAvatar == '8head'){
 					thetime *= 1.5;	
+				} else if(curAvatar == 'illbert'){
+					thetime *= .95;	
 				}
 				
 				FlxTween.tween(this, {timeLeft: 0}, thetime, {onComplete: function(f):Void{
@@ -329,6 +352,8 @@ class PlayState extends FlxState
 	function increaseSpeed():Void{
 		if(curAvatar == 'gerbo'){
 			updateSpeed(.05);	
+		} else if(curAvatar == 'illbert'){
+			updateSpeed(.08);				
 		} else {
 			updateSpeed(.07);				
 		}
@@ -591,9 +616,13 @@ class PlayState extends FlxState
 	}
 	
 	function preloadThings():Void{
-		FlxG.sound.cache('assets/music/play4.ogg');
-		FlxG.sound.cache('assets/music/play3.ogg');
-		FlxG.sound.cache('assets/music/play2.ogg');
-		FlxG.sound.cache('assets/music/play1.ogg');
+		if(curAvatar == 'illbert') {
+			FlxG.sound.cache('assets/music/illbert.ogg');
+		} else {
+			FlxG.sound.cache('assets/music/play4.ogg');
+			FlxG.sound.cache('assets/music/play3.ogg');
+			FlxG.sound.cache('assets/music/play2.ogg');
+			FlxG.sound.cache('assets/music/play1.ogg');
+		}
 	}
 }

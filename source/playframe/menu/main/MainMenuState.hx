@@ -45,9 +45,13 @@ class MainMenuState extends FlxState
 	
 	var newsText:FlxText;
 	
+	public static var refresh:Bool = false;
+	
 	override public function create()
 	{		 
 		super.create();
+		
+		refresh = false;
 		
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -105,6 +109,11 @@ class MainMenuState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		
+		if(refresh){
+			refresh = false;
+			changeSelection(0);	
+		}
 		
 		if(canSelect){
 			if(Controls.getControl('LEFT', 'RELEASE')){
@@ -176,11 +185,17 @@ class MainMenuState extends FlxState
 				changeBgColor(0xFFBD92D2);
 			case 'config':
 				changeBgColor(0xFF92D2B7);
+			case 'scores':
+				changeBgColor(0xFFCBCBCB);
 			case 'leave':
 				changeBgColor(0xFFD29295);
 		}
 		
-		artSprite.loadGraphic('assets/images/menu/art/' + options[curSelected] + '.png');
+		if(PlayState.curAvatar == 'illbert'){
+			artSprite.loadGraphic('assets/images/menu/artillbert/' + options[curSelected] + '.png');			
+		} else {
+			artSprite.loadGraphic('assets/images/menu/art/' + options[curSelected] + '.png');
+		}
 		artSprite.scale.set(.7, .7);
 		
 		if(artTween != null && artTween.active){
