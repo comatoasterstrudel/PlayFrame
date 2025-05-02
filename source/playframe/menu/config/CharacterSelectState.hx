@@ -129,7 +129,7 @@ class CharacterSelectState extends FlxSubState
 	
 	function select():Void{
 		if(avatars[curSelected] == 'illbert' && !SaveData.checkIllbertUnlocked()) {
-			
+			FlxG.sound.play('assets/sounds/noillbert.ogg');
 			return;
 		}
 		
