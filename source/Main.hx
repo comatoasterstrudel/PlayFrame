@@ -32,5 +32,7 @@ class Main extends Sprite
 		
 		SaveData.init();
 		SaveData.load();
+		
+		FlxSprite.defaultAntialiasing = true;
 	}
 }
