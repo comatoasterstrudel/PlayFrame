@@ -49,6 +49,9 @@ class CharacterSprite extends FlxSprite
     }
     
     public function updateFps():Void{
+        if(animation.curAnim != null){
+            if(animation.curAnim.name == 'die') return;
+        }
         for(i in animation.getAnimationList()){
             i.frameRate = 3 * PlayState.additiveSpeed;
         }

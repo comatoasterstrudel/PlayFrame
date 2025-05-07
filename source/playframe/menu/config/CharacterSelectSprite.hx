@@ -14,8 +14,13 @@ class CharacterSelectSprite extends FlxSprite
         super(); 
 
         frames = FlxAtlasFrames.fromSparrow('assets/images/avatarportraits/' + name + '.png', 'assets/images/avatarportraits/' + name + '.xml');
-        animation.addByPrefix('hp4', 'hp4', 1);
-        animation.play('hp4');
+        if(name == 'illbert' || name =='illbertlocked'){
+            animation.addByPrefix('hp1', 'hp1', 1);
+            animation.play('hp1');   
+        } else {
+            animation.addByPrefix('hp4', 'hp4', 1);
+            animation.play('hp4');   
+        }
         setGraphicSize(Std.int(width * .5));
         updateHitbox();
         screenCenter(X);

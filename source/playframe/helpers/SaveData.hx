@@ -63,6 +63,9 @@ class SaveData{
     }   
     
     public static function checkIllbertUnlocked():Bool{
+        #if unlockIllbert
+        return true;
+        #end
         return(highscores.get('hexie') >= 50 && highscores.get('gerbo') >= 50 && highscores.get('8head') >= 50 && highscores.get('trifecta') >= 50);
     }
 }

@@ -180,20 +180,23 @@ class MainMenuState extends FlxState
 			}
 		});	
 		
-		switch(options[curSelected]){
-			case 'play':
-				changeBgColor(0xFFBD92D2);
-			case 'config':
-				changeBgColor(0xFF92D2B7);
-			case 'scores':
-				changeBgColor(0xFFCBCBCB);
-			case 'leave':
-				changeBgColor(0xFFD29295);
-		}
 		
 		if(PlayState.curAvatar == 'illbert'){
+			changeBgColor(0xFF98DFA4);
+
 			artSprite.loadGraphic('assets/images/menu/artillbert/' + options[curSelected] + '.png');			
 		} else {
+			switch(options[curSelected]){
+				case 'play':
+					changeBgColor(0xFFBD92D2);
+				case 'config':
+					changeBgColor(0xFF92D2B7);
+				case 'scores':
+					changeBgColor(0xFFCBCBCB);
+				case 'leave':
+					changeBgColor(0xFFD29295);
+			}
+			
 			artSprite.loadGraphic('assets/images/menu/art/' + options[curSelected] + '.png');
 		}
 		artSprite.scale.set(.7, .7);

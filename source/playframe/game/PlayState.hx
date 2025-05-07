@@ -422,7 +422,7 @@ class PlayState extends FlxState
 		updateSpeed(0);
 		
 		if(lives <= 0){
-			endGame();
+			endGame(); 
 		}
 	}
 	
@@ -431,6 +431,8 @@ class PlayState extends FlxState
 	var changePitch:Bool = true;
 	
 	function endGame():Void{
+		playFrame.die();
+		
 		gameOver = true;
 				
 		finalSpeed = additiveSpeed;

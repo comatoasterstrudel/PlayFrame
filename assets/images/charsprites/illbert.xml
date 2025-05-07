@@ -1,13 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="hexie.png">
-	<!-- Created using the Spritesheet and XML generator -->
-	<!-- https://uncertainprod.github.io/FNF-Spritesheet-XML-generator-Web -->
-	<SubTexture name="intro0000" x="1469" y="0" width="450" height="585" frameX="-205" frameY="-185" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="intro0001" x="0" y="1135" width="400" height="590" frameX="-204" frameY="-180" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="lose0000" x="0" y="610" width="508" height="525" frameX="-129" frameY="-245" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="lose0001" x="968" y="0" width="501" height="547" frameX="-121" frameY="-223" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="scared0000" x="1919" y="0" width="274" height="574" frameX="-260" frameY="-196" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="scared0001" x="400" y="1135" width="291" height="564" frameX="-252" frameY="-206" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="win0000" x="0" y="0" width="489" height="610" frameX="2" frameY="-160" frameWidth="768" frameHeight="768"/>
-	<SubTexture name="win0001" x="489" y="0" width="479" height="610" frameX="-291" frameY="-158" frameWidth="768" frameHeight="768"/>
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="illbert.png">
+<SubTexture name="lose0000" x="2138" y="0" width="675" height="721" frameX="-20" frameY="-51" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0001" x="1136" y="772" width="668" height="726" frameX="-24" frameY="-46" frameWidth="768" frameHeight="768" />
+<SubTexture name="intro0000" x="2138" y="721" width="565" height="688" frameX="-133" frameY="-84" frameWidth="768" frameHeight="768" />
+<SubTexture name="intro0001" x="670" y="772" width="466" height="727" frameX="-93" frameY="-45" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0000" x="0" y="772" width="670" height="745" frameX="-34" frameY="-27" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0001" x="0" y="1517" width="664" height="667" frameX="-19" frameY="-105" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0000" x="1938" y="1517" width="472" height="574" frameX="-93" frameY="-198" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0001" x="1409" y="1517" width="529" height="615" frameX="-88" frameY="-157" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0000" x="772" y="0" width="621" height="764" frameX="-69" frameY="-8" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0001" x="1393" y="0" width="745" height="758" frameX="-12" frameY="-14" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0002" x="664" y="1517" width="745" height="656" frameX="-25" frameY="-116" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0003" x="0" y="2184" width="755" height="553" frameX="-9" frameY="-219" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0004" x="755" y="2184" width="732" height="399" frameX="-16" frameY="-373" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0005" x="1487" y="2184" width="676" height="247" frameX="-28" frameY="-525" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0006" x="2138" y="1409" width="246" height="39" frameX="-260" frameY="-733" frameWidth="768" frameHeight="768" />
+<SubTexture name="die0007" x="0" y="0" width="772" height="772" frameX="0" frameY="0" frameWidth="768" frameHeight="768" />
 </TextureAtlas>

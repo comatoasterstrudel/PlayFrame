@@ -170,7 +170,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             baseCharacter = null;
             baseBackground = null;
             
-            initMicroGame();
+            initMicroGame(); 
             
             FlxTween.tween(text, {y: text.y - frameHeight}, .7 * PlayState.subtractiveSpeed, {ease: FlxEase.backIn});
         
@@ -255,5 +255,17 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
             
             trace('Destroyed microgame!!! ' + PlayState.curMicrogame);
         });
+    }
+    
+    public function die():Void{
+        if(PlayState.curAvatar == 'illbert'){
+            new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+            {
+                FlxG.sound.play('assets/sounds/illberthetsshot.ogg', .6);
+
+                baseCharacter.animation.addByPrefix('die', 'die', 20, false);
+                baseCharacter.animation.play('die');
+            });
+        } 
     }
 } 

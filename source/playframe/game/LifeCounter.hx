@@ -54,13 +54,19 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
         
         portrait = new FlxSprite();
         portrait.frames = FlxAtlasFrames.fromSparrow('assets/images/avatarportraits/' + PlayState.curAvatar + '.png', 'assets/images/avatarportraits/' + PlayState.curAvatar + '.xml');
-        portrait.animation.addByPrefix('hp4', 'hp4', 1);
-        portrait.animation.addByPrefix('hp3', 'hp3', 1);
-        portrait.animation.addByPrefix('hp2', 'hp2', 1);
-        portrait.animation.addByPrefix('hp1', 'hp1', 1);
-        portrait.animation.addByPrefix('hp0', 'hp1', 1);
-        if(PlayState.curAvatar == 'trifecta') portrait.animation.addByPrefix('hp5', 'hp5', 1);
-        portrait.animation.play('hp4');
+        if(PlayState.curAvatar == 'illbert' || PlayState.curAvatar == 'illbertlocked'){
+            portrait.animation.addByPrefix('hp1', 'hp1', 1);
+            portrait.animation.addByPrefix('hp0', 'hp1', 1);
+            portrait.animation.play('hp1');   
+        } else {
+            portrait.animation.addByPrefix('hp4', 'hp4', 1);
+            portrait.animation.addByPrefix('hp3', 'hp3', 1);
+            portrait.animation.addByPrefix('hp2', 'hp2', 1);
+            portrait.animation.addByPrefix('hp1', 'hp1', 1);
+            portrait.animation.addByPrefix('hp0', 'hp1', 1);
+            if(PlayState.curAvatar == 'trifecta') portrait.animation.addByPrefix('hp5', 'hp5', 1);
+            portrait.animation.play('hp4');   
+        }
         portrait.setGraphicSize(Std.int(portrait.width * .2));
         portrait.updateHitbox();
         ogPortraitSize = portrait.scale.x;
