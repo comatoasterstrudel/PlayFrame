@@ -5,8 +5,8 @@
 <SubTexture name="drop0002" x="461" y="1346" width="469" height="647" frameX="-118" frameY="-66" frameWidth="768" frameHeight="768" />
 <SubTexture name="hold0000" x="1766" y="647" width="403" height="647" frameX="-151" frameY="-66" frameWidth="768" frameHeight="768" />
 <SubTexture name="hold0001" x="2625" y="0" width="414" height="644" frameX="-146" frameY="-70" frameWidth="768" frameHeight="768" />
-<SubTexture name="holdwalk0000" x="1362" y="0" width="404" height="649" frameX="-151" frameY="-66" frameWidth="768" frameHeight="768" />
-<SubTexture name="holdwalk0001" x="2214" y="646" width="404" height="632" frameX="-151" frameY="-77" frameWidth="768" frameHeight="768" />
+<SubTexture name="b_holdwalk0000" x="1362" y="0" width="404" height="649" frameX="-151" frameY="-66" frameWidth="768" frameHeight="768" />
+<SubTexture name="b_holdwalk0001" x="2214" y="646" width="404" height="632" frameX="-151" frameY="-77" frameWidth="768" frameHeight="768" />
 <SubTexture name="idle0000" x="1362" y="649" width="403" height="647" frameX="-151" frameY="-66" frameWidth="768" frameHeight="768" />
 <SubTexture name="idle0001" x="2625" y="1288" width="402" height="642" frameX="-162" frameY="-72" frameWidth="768" frameHeight="768" />
 <SubTexture name="run0000" x="0" y="677" width="431" height="669" frameX="-151" frameY="-66" frameWidth="768" frameHeight="768" />

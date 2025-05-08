@@ -58,8 +58,9 @@ class LifeCounter extends FlxTypedGroup<FlxSprite>
             portrait.animation.addByPrefix('hp1', 'hp1', 1);
             portrait.animation.addByPrefix('hp0', 'hp1', 1);
             portrait.animation.play('hp1');   
-        } else {
+        } else {            
             portrait.animation.addByPrefix('hp4', 'hp4', 1);
+            
             portrait.animation.addByPrefix('hp3', 'hp3', 1);
             portrait.animation.addByPrefix('hp2', 'hp2', 1);
             portrait.animation.addByPrefix('hp1', 'hp1', 1);

@@ -91,7 +91,7 @@ class ScriptSupport {
 		script.setVariable("Controls", Controls);
 		script.setVariable("FlxAtlasFrames", FlxAtlasFrames);
 		script.setVariable("FlxCameraFollowStyle", FlxCameraFollowStyle);
-
+		script.setVariable("PINGPONG", FlxTweenType.PINGPONG);
 		script.mod = mod;
 	}
 
