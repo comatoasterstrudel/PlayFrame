@@ -51,6 +51,9 @@ var lossText:FlxSprite;
 
 var lossTweens:Array<FlxTween> = [];
 
+var text1:FlxSprite;
+var text2:FlxSprite;
+
 function create():Void{
     PlayState.wonMicrogame = false;
     
@@ -113,6 +116,27 @@ function create():Void{
     coverup.screenCenter();
     coverup.y = frameHeight - 50;
     microgameGroup.add(coverup);
+    
+    text1 = new FlxSprite();
+    text1.frames = FlxAtlasFrames.fromSparrow('assets/images/microgames/drop/text1.png', 'assets/images/microgames/drop/text1.xml');
+    text1.animation.addByPrefix('idle', 'idle');
+    text1.animation.play('idle');
+    text1.scale.set(.35, .35);
+    text1.updateHitbox();
+    Utilities.centerSpriteOnPos(text1, frameWidth / 2, frameHeight / 2);
+    text1.y += 250;
+    add(text1);
+    
+    text2 = new FlxSprite();
+    text2.frames = FlxAtlasFrames.fromSparrow('assets/images/microgames/drop/text2.png', 'assets/images/microgames/drop/text2.xml');
+    text2.animation.addByPrefix('idle', 'idle');
+    text2.animation.play('idle');
+    text2.scale.set(.35, .35);
+    text2.updateHitbox();
+    Utilities.centerSpriteOnPos(text2, frameWidth / 2, frameHeight / 2);
+    text2.y += 250;
+    add(text2);
+    text2.visible = false;
 }
 
 function formWells():Void{
@@ -193,6 +217,8 @@ function update(elapsed:Float):Void{
                 pickshape.visible = false;
                 cancelShapeTween();
                 playSound('assets/sounds/pickup.ogg', .75);
+                text1.visible = false;
+                text2.visible = true;
             }
         }
     } else {
@@ -249,6 +275,8 @@ function checkRightBoundary():Bool{
 
 function dropShape():Void{
     playSound('assets/sounds/drop.ogg', 1);
+    
+    text2.visible = false;
 
     dropped = true;
     canControl = false;
@@ -372,6 +400,9 @@ function destroyMicrogame():Void{
     pickshape.destroy();
     heldshape.destroy();
     
+    text1.destroy();
+    text2.destroy();
+
     well1.destroy();
     well2.destroy();
     well3.destroy();
