@@ -6,7 +6,7 @@ var arrows:FlxSprite;
 var pokedLeft:Bool = true;
 
 var pokeCount:Int = 0;
-var maxPokeCount:Int = 9;
+var maxPokeCount:Int = 7;
 
 var gameDone:Bool = false;
 

@@ -38,6 +38,11 @@
       "version": "8.2.2"
     },
     {
+      "name": "openfl",
+      "type": "haxelib",
+      "version": "9.4.1"
+    },
+    {
       "name": "systools",
       "type": "haxelib",
       "version": "1.1.0"

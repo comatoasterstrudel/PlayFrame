@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="hands.png">
+<SubTexture name="point0000" x="0" y="0" width="180" height="175" frameX="-4" frameY="-6" frameWidth="185" frameHeight="182" />
+<SubTexture name="mad0000" x="74" y="175" width="171" height="139" frameX="-13" frameY="-29" frameWidth="180" frameHeight="180" />
+<SubTexture name="idle0000" x="180" y="0" width="155" height="153" frameX="-15" frameY="-30" frameWidth="180" frameHeight="180" />
+<SubTexture name="good0000" x="0" y="175" width="74" height="150" frameX="-57" frameY="-17" frameWidth="180" frameHeight="180" />
+</TextureAtlas>
