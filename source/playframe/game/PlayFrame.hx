@@ -107,7 +107,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     
     var soundGroup:Array<FlxSound> = [];
     
-    function playSound(path:String, volume:Float):Void{
+    function playSound(path:String, volume:Float):FlxSound{
 		var sound:FlxSound = new FlxSound();
 		sound.loadEmbedded(path, false);
 		sound.volume = volume;
@@ -115,6 +115,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 		sound.play();
 		FlxG.sound.list.add(sound);
 		soundGroup.push(sound);
+        return sound;
 	}
     
     public function addIntroScene():Void{

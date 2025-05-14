@@ -40,6 +40,17 @@ var ended:Bool = false;
 
 var selectedshape:Int = 1; // 1 = pentagon, 2 = circle, 3 = hell
 
+var shapetween:FlxTween;
+
+var loseScreenUp:Bool = false;
+
+var lossBg:FlxBackdrop;
+var lossGuy:FlxSprite;
+var lossShapes:FlxSprite;
+var lossText:FlxSprite;
+
+var lossTweens:Array<FlxTween> = [];
+
 function create():Void{
     PlayState.wonMicrogame = false;
     
@@ -72,6 +83,12 @@ function create():Void{
     Utilities.centerSpriteOnPos(friend, frameWidth / 2, frameHeight / 2);
     friend.y -= 130;
     microgameGroup.add(friend);
+ 
+    friend.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int):Void{
+        if(name == 'run' || name == 'holdwalk'){
+            playSound('assets/sounds/walk.ogg', .5).pitch *= FlxG.random.float(.9, 1.1);
+        } 
+    };
         
     friend.animation.play('idle');
     
@@ -90,7 +107,7 @@ function create():Void{
     }
     microgameGroup.add(pickshape);
     
-    FlxTween.tween(pickshape.scale, {x: 1.35, y: 1.35}, 1, {ease: FlxEase.smootherStepInOut, type: PINGPONG});    
+    shapetween = FlxTween.tween(pickshape.scale, {x: 1.35, y: 1.35}, 1, {ease: FlxEase.smootherStepInOut, type: PINGPONG});    
     
     coverup = new FlxSprite().loadGraphic('assets/images/microgames/drop/bottombottom.png');
     coverup.screenCenter();
@@ -172,8 +189,10 @@ function update(elapsed:Float):Void{
             }
         } else {
             if(Controls.getControl('UP', 'RELEASE') && FlxG.overlap(friend, pickshape)|| Controls.getControl('ACCEPT', 'RELEASE') && FlxG.overlap(friend, pickshape)){            
-               holding = true;
-               pickshape.visible = false;
+                holding = true;
+                pickshape.visible = false;
+                cancelShapeTween();
+                playSound('assets/sounds/pickup.ogg', .75);
             }
         }
     } else {
@@ -193,7 +212,7 @@ function update(elapsed:Float):Void{
             friend.y = 0;  
     }
     
-    if(holding ||dropped){
+    if(holding || dropped){
         heldshape.visible = true;
         if(!dropped){
             Utilities.centerSpriteOnSprite(heldshape, friend, true, true);
@@ -213,9 +232,9 @@ function update(elapsed:Float):Void{
         if(heldshape.y > frameHeight - 50){
             if(droppedBox1 && selectedshape == 1 || droppedBox2 && selectedshape == 2 || droppedBox3 && selectedshape == 3){
                 win();
+            } else {
+                lose();
             }
-        } else if(heldshape.y > frameheight){
-           lose();
         }
     }
 }
@@ -229,6 +248,8 @@ function checkRightBoundary():Bool{
 }
 
 function dropShape():Void{
+    playSound('assets/sounds/drop.ogg', 1);
+
     dropped = true;
     canControl = false;
     
@@ -285,10 +306,53 @@ function win():Void{
     PlayState.wonMicrogame = true;
     
     friend.animation.play('win');
+    
+    playSound('assets/sounds/yaypoop.ogg', .7);
+}
+
+function cancelShapeTween():Void{
+    if(shapetween != null && shapetween.active){
+        shapetween.cancel();
+        shapetween.destroy();
+        shapetween = null;        
+    }
 }
 
 function lose():Void{
+    playSound('assets/sounds/FUCK.ogg', 1);
+
+    ended = true;
+
+    loseScreenUp = true;
     
+    lossBg = new FlxBackdrop('assets/images/microgames/drop/lose_bg.png');
+    lossBg.velocity.set(90, 90);
+    lossBg.alpha = 0;
+    microgameGroup.add(lossBg);
+    
+    lossTweens.push(FlxTween.tween(lossBg, {alpha: 1}, 1, {ease: FlxEase.quartOut}));    
+    
+    lossGuy = new FlxSprite().loadGraphic('assets/images/microgames/drop/lose_guy.png');
+    Utilities.centerSpriteOnPos(lossGuy, frameWidth / 2, frameHeight / 2);
+    microgameGroup.add(lossGuy);
+    lossGuy.y += frameHeight;
+    
+    lossTweens.push(FlxTween.tween(lossGuy, {y: lossGuy.y - frameHeight}, 1, {ease: FlxEase.quartOut}));  
+    
+    lossShapes = new FlxSprite().loadGraphic('assets/images/microgames/drop/lose_shapes.png');
+    Utilities.centerSpriteOnPos(lossShapes, frameWidth / 2, frameHeight / 2);
+    microgameGroup.add(lossShapes);
+    lossShapes.scale.set(0.001, 0.001);
+    
+    lossTweens.push(FlxTween.tween(lossShapes.scale, {x: 1, y:1}, 1, {ease: FlxEase.quartOut}));    
+    
+    lossText = new FlxSprite().loadGraphic('assets/images/microgames/drop/lose_text.png');
+    Utilities.centerSpriteOnPos(lossText, frameWidth / 2, frameHeight / 2);
+    microgameGroup.add(lossText);
+    lossText.scale.set(40, 0.001);
+    
+    lossTweens.push(FlxTween.tween(lossText.scale, {x: 1, y:1}, 1, {ease: FlxEase.quartOut}));    
+
 }
 
 function endMicrogame():Void{
@@ -298,6 +362,8 @@ function endMicrogame():Void{
 }
 
 function destroyMicrogame():Void{
+    cancelShapeTween();
+    
     bg.destroy();
     bridge.destroy(); 
     
@@ -321,4 +387,20 @@ function destroyMicrogame():Void{
     
     coverup.destroy();
     if(fakecoverup != null) fakecoverup.destroy();
+    
+    if(loseScreenUp){
+        for(i in lossTweens){
+            if(i != null && i.active){
+                i.cancel();
+                i.destroy();
+                i = null;
+            }
+        }
+        lossTweens = [];
+        
+        lossBg.destroy();
+        lossGuy.destroy();
+        lossShapes.destroy();
+        lossText.destroy();
+    }
 }
