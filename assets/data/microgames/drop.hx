@@ -110,7 +110,7 @@ function create():Void{
     }
     microgameGroup.add(pickshape);
     
-    shapetween = FlxTween.tween(pickshape.scale, {x: 1.35, y: 1.35}, 1, {ease: FlxEase.smootherStepInOut, type: PINGPONG});    
+    shapetween = FlxTween.tween(pickshape.scale, {x: 1.35, y: 1.35}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.smootherStepInOut, type: PINGPONG});    
     
     coverup = new FlxSprite().loadGraphic('assets/images/microgames/drop/bottombottom.png');
     coverup.screenCenter();
@@ -344,13 +344,15 @@ function cancelShapeTween():Void{
 
 function lose():Void{
     playSound('assets/sounds/FUCK.ogg', 1);
-
+    playSound('assets/sounds/GRRR I FUCKING HATE YOU FUCK YOU FUCK YOU.ogg', .5);
+    //mr chris im sorry
+    
     ended = true;
 
     loseScreenUp = true;
     
     lossBg = new FlxBackdrop('assets/images/microgames/drop/lose_bg.png');
-    lossBg.velocity.set(90, 90);
+    lossBg.velocity.set(90 * PlayState.additiveSpeed, 90 * PlayState.additiveSpeed);
     lossBg.alpha = 0;
     microgameGroup.add(lossBg);
     
