@@ -121,21 +121,17 @@ function create():Void{
     text1.frames = FlxAtlasFrames.fromSparrow('assets/images/microgames/drop/text1.png', 'assets/images/microgames/drop/text1.xml');
     text1.animation.addByPrefix('idle', 'idle');
     text1.animation.play('idle');
-    text1.scale.set(.35, .35);
-    text1.updateHitbox();
     Utilities.centerSpriteOnPos(text1, frameWidth / 2, frameHeight / 2);
-    text1.y += 250;
-    add(text1);
+    text1.y += 80;
+    microgameGroup.add(text1);
     
     text2 = new FlxSprite();
     text2.frames = FlxAtlasFrames.fromSparrow('assets/images/microgames/drop/text2.png', 'assets/images/microgames/drop/text2.xml');
     text2.animation.addByPrefix('idle', 'idle');
     text2.animation.play('idle');
-    text2.scale.set(.35, .35);
-    text2.updateHitbox();
     Utilities.centerSpriteOnPos(text2, frameWidth / 2, frameHeight / 2);
-    text2.y += 250;
-    add(text2);
+    text2.y += 80;
+    microgameGroup.add(text2);
     text2.visible = false;
 }
 
