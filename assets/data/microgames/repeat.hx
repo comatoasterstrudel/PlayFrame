@@ -122,7 +122,7 @@ function create(){
     text1.y -= 40;
     microgameGroup.add(text1); 
     
-    new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+    new FlxTimer().start(.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
     {
         for(i in 0...4){
             new FlxTimer().start((.7 * i) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)

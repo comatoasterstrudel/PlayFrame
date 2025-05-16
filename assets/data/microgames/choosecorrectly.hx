@@ -47,6 +47,7 @@ function create(){
     guy.updateHitbox();
     Utilities.centerSpriteOnPos(guy, frameWidth / 2, frameHeight / 2);
     guy.y += 30;
+    guy.antialiasing = false;
     microgameGroup.add(guy);
     
     arrows = new FlxSprite();

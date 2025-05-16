@@ -186,9 +186,9 @@ function update(elapsed:Float):Void{
 
     if(canControl){
         if(holding){
-            speed = 250;    
+            speed = 300;    
         } else {
-            speed = 300;
+            speed = 360;
         }
         
         if(Controls.getControl('LEFT', 'HOLD') && !checkLeftBoundary()){            

@@ -66,6 +66,6 @@ class SaveData{
         #if unlockIllbert
         return true;
         #end
-        return(highscores.get('hexie') >= 50 && highscores.get('gerbo') >= 50 && highscores.get('8head') >= 50 && highscores.get('trifecta') >= 50);
+        return(highscores.get('hexie') >= 25 && highscores.get('gerbo') >= 25 && highscores.get('8head') >= 25 && highscores.get('trifecta') >= 25);
     }
 }

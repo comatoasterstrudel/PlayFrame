@@ -45,7 +45,14 @@ class CharacterSelectState extends FlxSubState
 		MainMenuState.canSelect = false;
 		
 		formList();
-						
+				
+		for(i in 0...avatars.length){
+			if(avatars[i] == PlayState.curAvatar){
+				internalCurSelected = i;
+				curSelected = i;
+			}	
+		}
+		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
 		bg.velocity.set(10, 10);
         add(bg);

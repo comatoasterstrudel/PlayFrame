@@ -46,7 +46,9 @@ class MainMenuState extends FlxState
 	var newsText:FlxText;
 	
 	public static var refresh:Bool = false;
-	
+
+	var topCam:FlxCamera;
+
 	override public function create()
 	{		 
 		super.create();
@@ -104,11 +106,27 @@ class MainMenuState extends FlxState
 		changeSelection();
 		
 		triggerNewsTicker();
+		
+		topCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		topCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(topCam, false);
+		
+		var tran = new ShapeTransition('in', .5);
+		tran.camera = topCam;
+		add(tran);
+
+		canSelect = false;
+		
+		new FlxTimer().start(.5, function(tmr:FlxTimer){
+			canSelect = true;
+		});
 	}
 
 	override public function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		
+		FlxG.mouse.visible = false;
 		
 		if(refresh){
 			refresh = false;
@@ -127,7 +145,19 @@ class MainMenuState extends FlxState
 			if(Controls.getControl('ACCEPT', 'RELEASE')){
 				switch(options[curSelected]){
 					case 'play':
-						FlxG.switchState(new PlayState());
+						canSelect = false;
+						
+						var tran = new ShapeTransition('out', .5);
+						tran.camera = topCam;
+						add(tran);
+						
+						if(FlxG.sound.music != null){
+							FlxG.sound.music.fadeOut(0.5, 0);
+						}
+						
+						new FlxTimer().start(.5, function(tmr:FlxTimer){
+							FlxG.switchState(new PlayState());
+						});
 					case 'config':
 						openSubState(new CharacterSelectState());
 					case 'scores':
@@ -136,6 +166,10 @@ class MainMenuState extends FlxState
 						Sys.exit(1);
 				}
 			}	
+			
+			if(Controls.getControl('BACK', 'RELEASE')){
+				FlxG.sound.playMusic('assets/music/washing machine.ogg', 1, false);
+			}
 		}
 		
 		logo.color = bg.color;
@@ -184,7 +218,9 @@ class MainMenuState extends FlxState
 		if(PlayState.curAvatar == 'illbert'){
 			changeBgColor(0xFF98DFA4);
 
-			artSprite.loadGraphic('assets/images/menu/artillbert/' + options[curSelected] + '.png');			
+			artSprite.loadGraphic('assets/images/menu/artillbert/' + options[curSelected] + '.png');	
+			
+			logo.loadGraphic('assets/images/menu/logofuckinbitchfuck.png');
 		} else {
 			switch(options[curSelected]){
 				case 'play':
@@ -198,6 +234,8 @@ class MainMenuState extends FlxState
 			}
 			
 			artSprite.loadGraphic('assets/images/menu/art/' + options[curSelected] + '.png');
+			
+			logo.loadGraphic('assets/images/menu/logo.png');
 		}
 		artSprite.scale.set(.7, .7);
 		

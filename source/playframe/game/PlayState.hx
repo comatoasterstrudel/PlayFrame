@@ -28,6 +28,8 @@ class PlayState extends FlxState
 	 
 	var speedCam:FlxCamera;
 	
+	var topCam:FlxCamera;
+	
 	/**
 	 * thhe scrolling bg at the top
 	 */
@@ -152,6 +154,12 @@ class PlayState extends FlxState
 	 * which microgames were lost
 	 */
 	public static var lostMicrogames:Array<String> = [];
+		
+	var leaveSprite:FlxSprite;
+	
+	var leaveProgress:Float = 0;
+	
+	var leaving:Bool = false;
 	
 	override public function create()
 	{		 
@@ -159,7 +167,7 @@ class PlayState extends FlxState
 		
 		preloadThings();
 		fillMicrogames();
-		
+				
 		additiveSpeed = 1;
 		subtractiveSpeed = 1;
 
@@ -242,6 +250,8 @@ class PlayState extends FlxState
 			changeActiveMusic('play4');			
 		}
 		
+		FlxG.sound.music.time = 0;
+		
 		beatManager = new BeatManager(90, beatHit);
 		
 		var data = new AvatarData(curAvatar);
@@ -251,6 +261,19 @@ class PlayState extends FlxState
 		data = null;
 		
 		updateSpeed(0);
+		
+		topCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		topCam.bgColor = FlxColor.TRANSPARENT;
+		FlxG.cameras.add(topCam, false);
+		
+		var tran = new ShapeTransition('in', .5);
+		tran.camera = topCam;
+		add(tran);
+				
+		leaveSprite = new FlxSprite().loadGraphic('assets/images/leave/$curAvatar.png');
+		leaveSprite.camera = topCam;
+		leaveSprite.alpha = 0;
+		add(leaveSprite);
 	}
 
 	var fucked:Bool = false;
@@ -261,10 +284,39 @@ class PlayState extends FlxState
 		
 		beatManager.update(elapsed);
 		
-		if(Controls.getControl('BACK', 'RELEASE')){
-			FlxG.switchState(new MainMenuState());	
-			FlxG.sound.music.stop();
-			FlxG.sound.music.time = 0;
+		if(!leaving && !gameOver){
+			if(Controls.getControl('BACK', 'HOLD')){
+				leaveProgress += (1 * elapsed);
+								
+				if(leaveProgress >= 1){
+					FlxG.sound.play('assets/sounds/shits my pants.ogg', .6);
+
+					leaving = true;
+					gameOver = true;
+					
+					var tran = new ShapeTransition('out', .5);
+					tran.camera = topCam;
+					add(tran);
+				
+					FlxG.sound.music.fadeOut(0.5, 0);
+					
+					new FlxTimer().start(.5, function(tmr:FlxTimer)
+					{
+						FlxG.switchState(new MainMenuState());	
+						FlxG.sound.music.stop();
+						FlxG.sound.music.time = 0;
+					});
+				}
+			} else {
+				leaveProgress = Utilities.lerpThing(leaveProgress, 0, elapsed, 5);
+				
+				if (leaveProgress < 1 && leaveProgress - 0.01 <= 0){ // fucking flxbar
+					leaveProgress = 0;
+				}			
+		
+			}	
+			
+			leaveSprite.alpha = leaveProgress;
 		}
 		
 		#if debug
@@ -351,11 +403,11 @@ class PlayState extends FlxState
 	
 	function increaseSpeed():Void{
 		if(curAvatar == 'gerbo'){
-			updateSpeed(.05);	
+			updateSpeed(.1);	
 		} else if(curAvatar == 'illbert'){
-			updateSpeed(.08);				
+			updateSpeed(.1512345);				
 		} else {
-			updateSpeed(.07);				
+			updateSpeed(.15);				
 		}
 		
 		var data = new AvatarData(curAvatar);
@@ -367,7 +419,7 @@ class PlayState extends FlxState
 
 		speedUps ++;
 		
-		speedSprite = new FlxSprite().loadGraphic( speedUps == 10 ? ('assets/images/speedupmax/' + curAvatar + '.png') : ('assets/images/speedup/' + curAvatar + '.png'));
+		speedSprite = new FlxSprite().loadGraphic( speedUps == 5 ? ('assets/images/speedupmax/' + curAvatar + '.png') : ('assets/images/speedup/' + curAvatar + '.png'));
 		speedSprite.camera = speedCam;
 		speedSprite.screenCenter();
 		speedSprite.x -= FlxG.width;
@@ -395,7 +447,7 @@ class PlayState extends FlxState
 	}
 	
 	public static function checkSpeedUp():Bool{
-		return speedUps < 10 && wonMicrogame && curScore % 5 == 0;
+		return speedUps < 5 && wonMicrogame && curScore % 5 == 0;
 	}
 	
 	function removeLife():Void{

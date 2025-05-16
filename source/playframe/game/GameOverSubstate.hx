@@ -67,6 +67,8 @@ class GameOverSubstate extends FlxSubState
         fadeIn();
     }
     
+    var leavin:Bool = false;
+    
     override function update(elapsed:Float):Void{
         super.update(elapsed);
         
@@ -78,6 +80,17 @@ class GameOverSubstate extends FlxSubState
                 sprs.push(spr);
             });
             Utilities.centerGroup(null, sprs, 10, text.x + text.width / 2);
+        }
+        
+        if(!leavin && Controls.getControl('ACCEPT', 'RELEASE') || !leavin && Controls.getControl('BACK', 'RELEASE')){
+            leavin = true;
+            var tran = new ShapeTransition('out', .5);
+			tran.camera = theCam;
+			add(tran);
+						
+			new FlxTimer().start(.5, function(tmr:FlxTimer){
+				FlxG.switchState(new MainMenuState());
+			});
         }
     }
     function fadeIn():Void{
