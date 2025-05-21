@@ -161,6 +161,8 @@ class PlayState extends FlxState
 	
 	var leaving:Bool = false;
 	
+	public static var practiceGame:String = '';
+	
 	override public function create()
 	{		 
 		super.create();
@@ -639,6 +641,10 @@ class PlayState extends FlxState
 		#if forceMicrogame
 		allMicrogames = [Compiler.getDefine("forceMicrogame").split('=')[0]];
 		#end
+		
+		if(practiceGame != ''){
+			allMicrogames = [practiceGame];	
+		}
 		
 		fillAvailableMicrogames();
 

@@ -106,20 +106,34 @@ class MainMenuState extends FlxState
 		changeSelection();
 		
 		triggerNewsTicker();
-		
-		topCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
-		topCam.bgColor = FlxColor.TRANSPARENT;
-		FlxG.cameras.add(topCam, false);
-		
-		var tran = new ShapeTransition('in', .5);
-		tran.camera = topCam;
-		add(tran);
 
-		canSelect = false;
-		
-		new FlxTimer().start(.5, function(tmr:FlxTimer){
-			canSelect = true;
-		});
+		if(PlayState.practiceGame != ''){
+			openSubState(new PracticeState(true));
+			
+			topCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+			topCam.bgColor = FlxColor.TRANSPARENT;
+			FlxG.cameras.add(topCam, false);
+			
+			var tran = new ShapeTransition('in', .5);
+			tran.camera = topCam;
+			add(tran);
+			
+			canSelect = false;
+		} else {
+			topCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+			topCam.bgColor = FlxColor.TRANSPARENT;
+			FlxG.cameras.add(topCam, false);
+			
+			var tran = new ShapeTransition('in', .5);
+			tran.camera = topCam;
+			add(tran);
+
+			canSelect = false;
+			
+			new FlxTimer().start(.5, function(tmr:FlxTimer){
+				canSelect = true;
+			});	
+		}
 	}
 
 	override public function update(elapsed:Float)
@@ -155,6 +169,8 @@ class MainMenuState extends FlxState
 							FlxG.sound.music.fadeOut(0.5, 0);
 						}
 						
+						PlayState.practiceGame = '';
+
 						new FlxTimer().start(.5, function(tmr:FlxTimer){
 							FlxG.switchState(new PlayState());
 						});
@@ -162,6 +178,8 @@ class MainMenuState extends FlxState
 						openSubState(new CharacterSelectState());
 					case 'scores':
 						openSubState(new ScoresState());
+					case 'practice':
+						openSubState(new PracticeState());
 					case 'leave':
 						Sys.exit(1);
 				}

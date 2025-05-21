@@ -38,7 +38,8 @@ class GameOverSubstate extends FlxSubState
         text.camera = theCam;
 		add(text);
         
-        if(PlayState.curScore > SaveData.highscores.get(PlayState.curAvatar)){
+
+        if(PlayState.curScore > SaveData.highscores.get(PlayState.curAvatar) && PlayState.practiceGame == ''){
             trace('New Highscore! ' + PlayState.curScore);  
             
             SaveData.highscores.set(PlayState.curAvatar, PlayState.curScore);

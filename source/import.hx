@@ -50,6 +50,8 @@ import playframe.helpers.Utilities;
 import playframe.json.AvatarData;
 import playframe.json.MicrogameData;
 import playframe.menu.config.CharacterSelectSprite;
+import playframe.menu.practice.PracticeText;
+
 import playframe.menu.config.CharacterSelectState;
 import playframe.menu.main.MainMenuButton;
 import playframe.menu.main.MainMenuState;
@@ -61,4 +63,5 @@ import sys.FileSystem;
 import sys.io.File;
 import textbox.Textbox;
 import playframe.tran.ShapeTransition;
+import playframe.menu.practice.PracticeState;
 using StringTools;
