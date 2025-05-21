@@ -22,7 +22,7 @@ class MainMenuState extends FlxState
 	
 	public static var canSelect:Bool = true;
 	
-	var options:Array<String> = ['play', 'config', 'scores', 'leave'];
+	var options:Array<String> = ['play', 'config', 'scores', 'practice', 'tutorial', 'leave'];
 	
 	var buttons:FlxTypedGroup<MainMenuButton>;
 	
@@ -229,6 +229,10 @@ class MainMenuState extends FlxState
 					changeBgColor(0xFF92D2B7);
 				case 'scores':
 					changeBgColor(0xFFCBCBCB);
+				case 'practice':
+					changeBgColor(0xFFE3F5A2);
+				case 'tutorial':
+					changeBgColor(0xFF9A8CEA);
 				case 'leave':
 					changeBgColor(0xFFD29295);
 			}
