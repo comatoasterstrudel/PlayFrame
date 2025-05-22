@@ -113,7 +113,6 @@ function lose():Void{
     guy.animation.finishCallback = function(name:String):Void{
         guy.animation.play('polploop', false);  
     }
-    
     playSound('assets/sounds/headpop.ogg', 1);
 }
 

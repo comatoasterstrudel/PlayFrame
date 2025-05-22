@@ -3,3 +3,4 @@ poke:
 cross:
 drop:
 repeat:
+slice:
