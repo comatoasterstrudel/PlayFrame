@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="gerbo.png">
+<SubTexture name="intro0000" x="705" y="769" width="558" height="710" frameX="-39" frameY="-62" frameWidth="768" frameHeight="768" />
+<SubTexture name="intro0001" x="1263" y="769" width="586" height="706" frameX="-11" frameY="-66" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0000" x="709" y="0" width="696" height="757" frameX="-45" frameY="-15" frameWidth="768" frameHeight="768" />
+<SubTexture name="scared0001" x="0" y="1496" width="743" height="544" frameX="-4" frameY="-228" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0000" x="1405" y="0" width="678" height="753" frameX="-34" frameY="-19" frameWidth="768" frameHeight="768" />
+<SubTexture name="win0001" x="0" y="0" width="709" height="769" frameX="-59" frameY="-3" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0000" x="0" y="769" width="705" height="727" frameX="-53" frameY="-45" frameWidth="768" frameHeight="768" />
+<SubTexture name="lose0001" x="2083" y="0" width="694" height="693" frameX="-49" frameY="-79" frameWidth="768" frameHeight="768" />
+</TextureAtlas>

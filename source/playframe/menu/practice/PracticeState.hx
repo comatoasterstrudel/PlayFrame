@@ -172,6 +172,8 @@ class PracticeState extends FlxSubState
 					FlxG.sound.music.fadeOut(0.5, 0);
 				}
 				
+				PlayState.isTutorial = false;
+
 				new FlxTimer().start(.5, function(tmr:FlxTimer){
 					FlxG.switchState(new PlayState());
 				});

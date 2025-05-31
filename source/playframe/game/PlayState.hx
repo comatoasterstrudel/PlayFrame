@@ -167,9 +167,24 @@ class PlayState extends FlxState
 	
 	var speeding:Bool = false;
 	
+	public static var isTutorial:Bool = false;
+	
+	var dia:DialogueBox;
+	
+	public static var inTutorial:Bool = false; //if the tutorial is currentlt going
+	
+	var tutorialcolor = FlxColor.fromRGB(94, 101, 141);
+	
+	public static var advanceTutorial:Bool = false;
+	public static var tutorialLevel:Int = 0;
+	
 	override public function create()
 	{		 
 		super.create();
+		
+		inTutorial = isTutorial;
+		tutorialLevel = 0;
+		advanceTutorial = false;
 		
 		DiscordClient.changePresence('Welcome To The VIDEOGAME', null);
 
@@ -246,31 +261,55 @@ class PlayState extends FlxState
 		
 		playFrame = new PlayFrame(0);
 		add(playFrame);
-		playFrame.addIntroScene();
+		if(!inTutorial) playFrame.addIntroScene(); else playFrame.addTutorialScene();
 		
 		speedCam = new FlxCamera(0, 0, FlxG.width, FlxG.height);
 		speedCam.bgColor = FlxColor.TRANSPARENT;
 		FlxG.cameras.add(speedCam, false);
 		
-		new FlxTimer().start(2.7, function(tmr:FlxTimer)
-		{
-			startMicrogame(pickMicrogame());
-		});
+		if(isTutorial){
+			dia = new DialogueBox();
+			dia.camera = speedCam;
+			add(dia);	
+		}
 		
-		if(curAvatar == 'illbert'){
-			changeActiveMusic('illbert');
+		if(!inTutorial){
+			new FlxTimer().start(2.7, function(tmr:FlxTimer)
+			{
+				startMicrogame(pickMicrogame());
+			});	
 		} else {
-			changeActiveMusic('play4');			
+			new FlxTimer().start(2.7, function(tmr:FlxTimer)
+			{
+				dia.startDialogue('intro', function():Void{
+					tutorialLevel ++;
+					startMicrogame('tut');
+				});
+			});	
+		}
+		
+		if(!inTutorial){
+			if(curAvatar == 'illbert'){
+				changeActiveMusic('illbert');
+			} else {
+				changeActiveMusic('play4');			
+			}	
+		} else {
+			changeActiveMusic('tutorial');			
 		}
 		
 		FlxG.sound.music.time = 0;
 		
 		beatManager = new BeatManager(90, beatHit);
-		
+	
 		var data = new AvatarData(curAvatar);
 		
-		changeBgColor(data.color, 0.001);
-		
+		if(!inTutorial){
+			changeBgColor(data.color, 0.001);			
+		} else {
+			changeBgColor(tutorialcolor, 0.001);						
+		}
+			
 		data = null;
 		
 		updateSpeed(0);
@@ -358,6 +397,18 @@ class PlayState extends FlxState
 		#end
 
 		updateColors();
+		
+		if(advanceTutorial){
+			advanceTheTutorial();
+		}
+	}
+	
+	function advanceTheTutorial():Void{
+		advanceTutorial = false;
+		
+		switch(tutorialLevel){
+			
+		}
 	}
 	
 	function startMicrogame(name:String):Void{
@@ -390,7 +441,11 @@ class PlayState extends FlxState
 				FlxTween.tween(this, {timeLeft: 0}, thetime, {onComplete: function(f):Void{
 					var data = new AvatarData(curAvatar);
 
-					changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
+					if(!inTutorial){
+						changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);			
+					} else {
+						changeBgColor(tutorialcolor, 1 * PlayState.subtractiveSpeed);						
+					}
 					
 					FlxTween.tween(timeBar, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
 					
@@ -403,21 +458,71 @@ class PlayState extends FlxState
 					playFrame.endMicroGame();
 
 					if(!gameOver){
-						if(checkSpeedUp()){
-							new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+						if(inTutorial){
+							new FlxTimer().start( 3.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 							{
-								if(speedUps == 2 && !harder && practiceGame == ''){
-									increaseLevel();
-								} else {
-									increaseSpeed();									
+								switch(tutorialLevel){
+									case 1:
+										if(wonMicrogame){
+											tutorialLevel ++;
+											dia.startDialogue('yay1', function():Void{
+												startMicrogame('choosecorrectly');
+											});
+										} else {
+											dia.startDialogue('lostone', function():Void{
+												startMicrogame('tut');
+											});
+										}
+									case 2 | 3 | 4:
+										if(wonMicrogame){
+											inTutorial = false;
+											dia.startDialogue('good1', function():Void{
+												playFrame.destroyThings();
+												playFrame.addIntroScene();
+												speedCam.flash();
+												
+												new FlxTimer().start(2.7, function(tmr:FlxTimer)
+												{
+													startMicrogame(pickMicrogame());
+												});	
+												
+												FlxG.sound.music.time = 0;
+												
+												if(curAvatar == 'illbert'){
+													changeActiveMusic('illbert');
+												} else {
+													changeActiveMusic('play4');			
+												}	
+												
+												var data = new AvatarData(curAvatar);
+
+												changeBgColor(data.color, 0.000001);			
+											});
+										} else {
+											dia.startDialogue(('bad' + (tutorialLevel - 1)), function():Void{
+												startMicrogame('choosecorrectly');
+											});
+											if(tutorialLevel < 4) tutorialLevel ++;
+										}
 								}
-							});
+							});	
+						} else {
+							if(checkSpeedUp()){
+								new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+								{
+									if(speedUps == 2 && !harder && practiceGame == ''){
+										increaseLevel();
+									} else {
+										increaseSpeed();									
+									}
+								});
+							}
+								
+							new FlxTimer().start((checkSpeedUp() ? 6.5 : 3.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+							{
+								startMicrogame(pickMicrogame());
+							});	
 						}
-							
-						new FlxTimer().start((checkSpeedUp() ? 6.5 : 3.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
-						{
-							startMicrogame(pickMicrogame());
-						});	
 					}
 				}});   
 			});
@@ -519,7 +624,7 @@ class PlayState extends FlxState
 	}
 
 	public static function checkSpeedUp():Bool{
-		return speedUps < 5 && wonMicrogame && curScore % 5 == 0;
+		return speedUps < 5 && wonMicrogame && curScore % 5 == 0 && curScore > 0;
 	}
 	
 	function removeLife():Void{
@@ -531,16 +636,18 @@ class PlayState extends FlxState
 			if(i.ID == lives) iconToShake = i;	
 		}
 
-		#if instaKill
-		lives -= 3;
-		#end
-		lives -= 1;
+		if(!inTutorial){
+			#if instaKill
+			lives -= 3;
+			#end
+			lives -= 1;	
+			
+			if(lives > 0) changeActiveMusic('play' + lives);
+		}
 		
 		lifeCounter.updateLives(lives);		
 		FlxTween.shake(iconToShake, 0.1, .2, XY);
-		
-		if(lives > 0) changeActiveMusic('play' + lives);
-				
+						
 		FlxG.sound.play('assets/sounds/loselife.ogg', 1);
 		
 		updateSpeed(0);
@@ -591,9 +698,11 @@ class PlayState extends FlxState
 	function addPoint():Void{
 		FlxG.sound.play('assets/sounds/win.ogg', .7);
 
-		curScore ++;
+		if(!inTutorial){
+			curScore ++;
 		
-		lifeCounter.addScore();
+			lifeCounter.addScore();	
+		}
 	}
 	
 	/**

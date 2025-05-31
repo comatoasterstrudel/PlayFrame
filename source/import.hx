@@ -62,6 +62,7 @@ import playframe.script.HaxeScript;
 import playframe.script.ScriptSupport;
 import sys.FileSystem;
 import sys.io.File;
+import playframe.dialogue.DialogueBox;
 import textbox.Textbox;
 import playframe.tran.ShapeTransition;
 import playframe.menu.practice.PracticeState;

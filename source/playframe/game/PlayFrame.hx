@@ -10,7 +10,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     /**
      * the camera the frame is displayed on!!
      */
-    var frameCamera:FlxCamera;
+    public var frameCamera:FlxCamera;
     
     /**
      * the camera the frame is displayed on!!
@@ -129,6 +129,27 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         baseCharacter.playAnim('intro');
     }
     
+    public function addTutorialScene():Void{
+        reOrderGroups([baseSceneGroup, microgameGroup, transitionGroup]);
+                
+        addTutorialObjects();
+        
+        baseCharacter.playAnim('intro');
+    }
+    
+    public function addTutorialObjects():Void{
+        baseBackground = new FlxBackdrop('assets/images/framebg/tut.png', XY, 0, 0);
+        baseSceneGroup.add(baseBackground);
+        
+        baseCharacter = new CharacterSprite('tut');
+        Utilities.centerSpriteOnPos(baseCharacter, frameWidth / 2);
+        baseCharacter.y = frameHeight;
+        baseSceneGroup.add(baseCharacter);
+        FlxTween.tween(baseCharacter, {y: frameHeight - baseCharacter.height}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+        
+        updateSpeed();
+    }
+    
     function addBaseObjects():Void{
         baseBackground = new FlxBackdrop('assets/images/framebg/' + PlayState.curAvatar + '.png', XY, 0, 0);
         baseSceneGroup.add(baseBackground);
@@ -169,10 +190,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         
         new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
         {
-            baseCharacter.destroy();
-            baseBackground.destroy();
-            baseCharacter = null;
-            baseBackground = null;
+            destroyThings();
             
             initMicroGame(); 
             
@@ -187,6 +205,13 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
                 text.destroy();
             });
         });
+    }
+    
+    public function destroyThings():Void{
+        baseCharacter.destroy();
+        baseBackground.destroy();
+        baseCharacter = null;
+        baseBackground = null;
     }
     
     function initMicroGame():Void{
@@ -218,8 +243,10 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         
         soundGroup = [];
         
-        addBaseObjects();
-        
+        if(PlayState.inTutorial){
+            addTutorialObjects();
+        } else addBaseObjects();
+                
         if(!PlayState.wonMicrogame){
             baseCharacter.playAnim('lose');
         } else {

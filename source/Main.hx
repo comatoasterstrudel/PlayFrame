@@ -6,11 +6,6 @@ class Main extends Sprite
 	{
 		super();
 		
-		#if thirtyfps
-		FlxG.drawFramerate = 30;
-		FlxG.updateFramerate = 30;
-		#end
-		
 		addChild(new FlxGame(0, 0, LoadingState));
 		
 		#if thirtyfps
@@ -22,9 +17,6 @@ class Main extends Sprite
 		
 		DiscordClient.initialize();
 		DiscordClient.changePresence('Having fun and playing with my friends', 'Having fun and playing with my friends', 'Having fun and playing with my friends');
-		
-		SaveData.init();
-		SaveData.load();
 		
 		FlxSprite.defaultAntialiasing = true;
 	}
