@@ -59,4 +59,10 @@ class LoadingState extends FlxState
             });
         }});
     }
+    
+    override function update(elapsed:Float):Void{
+        super.update(elapsed);
+        
+        FlxG.mouse.visible = false;
+    }
 }
