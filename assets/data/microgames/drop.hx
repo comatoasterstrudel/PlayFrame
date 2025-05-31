@@ -72,6 +72,15 @@ function create():Void{
                 selectedshape = 3;
                 shapeRight = true;
         }
+    } else { //hell
+         switch(FlxG.random.int(1,2)){
+            case 1:
+                selectedshape = 1;
+                shapeRight = true;
+            case 2:
+                selectedshape = 3;
+                shapeRight = false;
+        }
     }
     
     bg = new FlxSprite().loadGraphic('assets/images/microgames/drop/bg_cave.png');

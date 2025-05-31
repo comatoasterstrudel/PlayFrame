@@ -5,6 +5,8 @@ class LoadingState extends FlxState
     override function create():Void{
         super.create();
         
+        DiscordClient.changePresence('Loading', null);
+
         trace('loading');
         
         for (i in Utilities.findFilesInPath('assets', ['.ogg'], true, true))

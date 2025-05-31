@@ -190,7 +190,6 @@ class PracticeState extends FlxSubState
 		hardmode.color = bg.color.getLightened(.2);
 		hardbg.color = bg.color.getDarkened(.1);
 		hardbg.y = -20;
-		hardbg.alpha = .9;
 	}
 	
 	function changeSelection(amount:Int = 0):Void{

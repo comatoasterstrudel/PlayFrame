@@ -171,6 +171,8 @@ class PlayState extends FlxState
 	{		 
 		super.create();
 		
+		DiscordClient.changePresence('Welcome To The VIDEOGAME', null);
+
 		preloadThings();
 		fillMicrogames();
 				
@@ -363,6 +365,8 @@ class PlayState extends FlxState
 		
 		var data = new MicrogameData(name);
 		
+		DiscordClient.changePresence(data.text, null);
+
 		playFrame.startMicroGame(name);
 		
 		changeBgColor(data.color, 1 * PlayState.subtractiveSpeed);
@@ -421,6 +425,8 @@ class PlayState extends FlxState
 	}
 	
 	function increaseSpeed():Void{
+		DiscordClient.changePresence(speedUps == 5 ? 'MAX SPEED!!' : 'SPEED UP!!', null);
+
 		if(curAvatar == 'gerbo'){
 			updateSpeed(.1);	
 		} else if(curAvatar == 'illbert'){
@@ -466,6 +472,8 @@ class PlayState extends FlxState
 	}
 	
 	function increaseLevel():Void{
+		DiscordClient.changePresence('LEVEL UP!!', null);
+		
 		speeding = true;
 		
 		harder = true;

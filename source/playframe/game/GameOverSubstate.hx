@@ -40,6 +40,8 @@ class GameOverSubstate extends FlxSubState
         
 
         if(PlayState.curScore > SaveData.highscores.get(PlayState.curAvatar) && PlayState.practiceGame == ''){
+            DiscordClient.changePresence('Game Over.. (New Highscore!)', null);
+
             trace('New Highscore! ' + PlayState.curScore);  
             
             SaveData.highscores.set(PlayState.curAvatar, PlayState.curScore);
@@ -50,6 +52,8 @@ class GameOverSubstate extends FlxSubState
             textbox.bring();
             textbox.camera = theCam;
             add(textbox);
+        } else {
+            DiscordClient.changePresence('Game Over..', null);
         }
             
         char = new FlxSprite().loadGraphic('assets/images/gameover/' + PlayState.curAvatar + '.png');

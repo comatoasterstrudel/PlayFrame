@@ -53,6 +53,8 @@ class MainMenuState extends FlxState
 	{		 
 		super.create();
 		
+		DiscordClient.changePresence('In the Menus', null);
+		
 		refresh = false;
 		
 		persistentUpdate = true;
