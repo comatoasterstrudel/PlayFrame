@@ -103,8 +103,11 @@ class GameOverSubstate extends FlxSubState
         FlxTween.tween(text, {alpha: 1}, 1.5, {ease: FlxEase.quartOut});      
         
         if(PlayState.curAvatar =='trifecta'){ //hang
-            char.y = -char.height;
-            FlxTween.tween(char, {y: 0}, 3, {startDelay: 2, ease: FlxEase.smootherStepInOut});       
+            var og = char.x;
+            
+            char.y = FlxG.height - char.height;
+            char.x = FlxG.width;
+            FlxTween.tween(char, {x: og}, 3, {startDelay: 2, ease: FlxEase.smootherStepInOut});       
         } else {
             FlxTween.tween(char, {y: FlxG.height / 2 - char.height / 2}, 1, {startDelay: .5, ease: FlxEase.quartOut});                  
         }

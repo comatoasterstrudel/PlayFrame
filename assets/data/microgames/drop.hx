@@ -367,8 +367,8 @@ function cancelShapeTween():Void{
 }
 
 function lose():Void{
-    playSound('assets/sounds/FUCK.ogg', 1);
-    playSound('assets/sounds/GRRR I FUCKING HATE YOU FUCK YOU FUCK YOU.ogg', .5);
+    playSound('assets/sounds/FUCK.ogg', .5);
+    playSound('assets/sounds/GRRR I FUCKING HATE YOU FUCK YOU FUCK YOU.ogg', .25);
     //mr chris im sorry
     
     ended = true;

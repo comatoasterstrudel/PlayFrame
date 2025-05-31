@@ -435,7 +435,7 @@ class PlayState extends FlxState
 				if(curAvatar == '8head'){
 					thetime *= 1.5;	
 				} else if(curAvatar == 'illbert'){
-					thetime *= .95;	
+					thetime *= .98;	
 				}
 				
 				FlxTween.tween(this, {timeLeft: 0}, thetime, {onComplete: function(f):Void{
