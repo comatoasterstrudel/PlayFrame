@@ -44,24 +44,30 @@ function create():Void{
         playSound('assets/sounds/warn.ogg', .7);
         warn.alpha = 1;
         FlxTween.tween(warn, {alpha: 0}, .6 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut, onComplete: function(f):Void{
-            arrow.visible = true;
-            arrow.animation.play('idle', true);
-            playSound('assets/sounds/arrow.ogg', .5);
+            new FlxTimer().start(PlayState.harder ? (FlxG.random.float(.1, .3) * PlayState.subtractiveSpeed) : 0, function(tmr:FlxTimer){
+                arrow.visible = true;
+                arrow.animation.play('idle', true);
+                playSound('assets/sounds/arrow.ogg', .5);
 
-            arrow.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int):Void{
-                if(frameNumber > 1){
-                    goodTiming = true;
-                }
-            };
-            
-            arrow.animation.finishCallback = function(name:String):Void{
-                if(!won){
-                    arrow.visible = false;
-                    canControl = false;
-                    shroud.animation.play('dodge');
-                    playSound('assets/sounds/misshsroud.ogg', 1);
-                }
-            };
+                if(PlayState.harder){
+                    arrow.animation.callback = function(name:String, frameNumber:Int, frameIndex:Int):Void{
+                        if(frameNumber > 1){
+                            goodTiming = true;    
+                        }
+                    };
+                } else {
+                    goodTiming = true;   
+                }            
+                
+                arrow.animation.finishCallback = function(name:String):Void{
+                    if(!won){
+                        arrow.visible = false;
+                        canControl = false;
+                        shroud.animation.play('dodge');
+                        playSound('assets/sounds/misshsroud.ogg', 1);
+                    }
+                };
+            });
         }});
     });
 }

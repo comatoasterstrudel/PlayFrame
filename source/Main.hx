@@ -6,19 +6,12 @@ class Main extends Sprite
 	{
 		super();
 		
-		#if forceMicrogame 
-		addChild(new FlxGame(0, 0, PlayState));
-		FlxG.mouse.visible = false;
-		
 		#if thirtyfps
 		FlxG.drawFramerate = 30;
 		FlxG.updateFramerate = 30;
 		#end
 		
-		return;
-		#end
-		
-		addChild(new FlxGame(0, 0, MainMenuState));
+		addChild(new FlxGame(0, 0, LoadingState));
 		
 		#if thirtyfps
 		FlxG.drawFramerate = 30;

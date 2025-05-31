@@ -51,10 +51,11 @@ import playframe.json.AvatarData;
 import playframe.json.MicrogameData;
 import playframe.menu.config.CharacterSelectSprite;
 import playframe.menu.practice.PracticeText;
-
+import playframe.helpers.LoadingState;
 import playframe.menu.config.CharacterSelectState;
 import playframe.menu.main.MainMenuButton;
 import playframe.menu.main.MainMenuState;
+import flixel.graphics.FlxGraphic;
 import playframe.menu.score.ScoresState;
 import playframe.script.HScript;
 import playframe.script.HaxeScript;

@@ -34,6 +34,10 @@ class PracticeState extends FlxSubState
 	var screenies:Array<FlxSprite> = [];
 	var screentweens:Array<FlxTween> = [];
 	
+	var hardmode:FlxText;
+	public static var hardenabled:Bool = false;
+	var hardbg:FlxSprite;
+	
 	public function new(fast:Bool = false):Void{
 		super();
 		
@@ -54,7 +58,7 @@ class PracticeState extends FlxSubState
 				
 		optionTexts = new FlxTypedGroup<PracticeText>();
 		add(optionTexts);
-        
+			
         for (i in 0...micros.length)
 		{
             var data = new MicrogameData(micros[i]);
@@ -73,6 +77,15 @@ class PracticeState extends FlxSubState
 			text2.color = data.color.getLightened(.3);
 			add(text2);
 		}
+		
+		hardbg = new FlxSprite().makeGraphic(FlxG.width, 80);
+		hardbg.alpha = .9;
+		add(hardbg);
+		
+		hardmode = new FlxText(0, 0, 'lala');
+		hardmode.screenCenter(X);
+		hardmode.setFormat('assets/fonts/Andy.ttf', 50, FlxColor.WHITE, CENTER);
+		add(hardmode);
 		
         changeSelection();
 		
@@ -102,6 +115,14 @@ class PracticeState extends FlxSubState
 			
 			if(Controls.getControl('DOWN', 'RELEASE')){
 				changeSelection(1);
+			}
+			
+			if(Controls.getControl('LEFT', 'RELEASE')){
+				hardenabled = false;	
+			}
+			
+			if(Controls.getControl('RIGHT', 'RELEASE')){
+				hardenabled = true;
 			}
 			
 			if(Controls.getControl('BACK', 'RELEASE')){
@@ -135,6 +156,7 @@ class PracticeState extends FlxSubState
 			
 			if(Controls.getControl('ACCEPT', 'RELEASE')){
 				PlayState.practiceGame = micros[curSelected];
+				PlayState.harder = hardenabled;
 				
 				busy = true;
 				
@@ -154,7 +176,21 @@ class PracticeState extends FlxSubState
 					FlxG.switchState(new PlayState());
 				});
 			}
-		}		
+		}	
+		
+		if(!hardenabled){
+			hardmode.text = 'Level Up Disabled >';
+		} else {
+			hardmode.text = '< Level Up Enabled';
+		}
+		
+		hardmode.x = 15;
+		hardmode.y = 5;
+		
+		hardmode.color = bg.color.getLightened(.2);
+		hardbg.color = bg.color.getDarkened(.1);
+		hardbg.y = -20;
+		hardbg.alpha = .9;
 	}
 	
 	function changeSelection(amount:Int = 0):Void{

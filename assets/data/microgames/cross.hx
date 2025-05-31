@@ -31,7 +31,7 @@ function create(){
     bg.scrollFactor.set(0,0);
     microgameGroup.add(bg);
     
-    ground = new FlxSprite().loadGraphic('assets/images/microgames/cross/ground.png');
+    ground = new FlxSprite().loadGraphic('assets/images/microgames/cross/' + (PlayState.harder ? 'harderground' : 'ground')  +  '.png');
     ground.scale.x = 1.15;
     ground.updateHitbox();
     Utilities.centerSpriteOnPos(ground, frameWidth / 2, frameHeight / 2);
@@ -89,6 +89,13 @@ function create(){
     microgameGroup.add(playerhitbox);
     
     previousX = playerhitbox.x;
+    
+    if(PlayState.harder){
+        hitbox1.x -= 60;
+        hitbox2.x += 30;
+        door.x += 50;
+        doorhitbox.x += 50;
+    }
 }
 
 function update(elapsed:Float){        

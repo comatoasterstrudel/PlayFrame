@@ -328,7 +328,7 @@ class MainMenuState extends FlxState
 	}
 	
 	function triggerNewsTicker():Void{
-		new FlxTimer().start(FlxG.random.float(5, 10), function(tmr:FlxTimer){
+		new FlxTimer().start(FlxG.random.float(8, 15), function(tmr:FlxTimer){
 			startNewsTicker();
 		});
 	}

@@ -58,6 +58,21 @@ function create():Void{
     PlayState.wonMicrogame = false;
     
     selectedshape = FlxG.random.int(1,3);
+    var shapeRight = FlxG.random.bool(50);
+    
+    if(!PlayState.harder){ //easier configs
+        switch(FlxG.random.int(1,3)){
+            case 1:
+                selectedshape = 2;
+                shapeRight = FlxG.random.bool(50);
+            case 2:
+                selectedshape = 1;
+                shapeRight = false;
+            case 3:
+                selectedshape = 3;
+                shapeRight = true;
+        }
+    }
     
     bg = new FlxSprite().loadGraphic('assets/images/microgames/drop/bg_cave.png');
     bg.scale.set(1.2, 1.2);
@@ -102,7 +117,7 @@ function create():Void{
     pickshape.scale.set(1, 1);
     Utilities.centerSpriteOnPos(pickshape, frameWidth / 2, frameHeight / 2);
     pickshape.y -= 130;
-    if(FlxG.random.bool(50)){
+    if(shapeRight){
         pickshape.x += 300;
     } else {
         pickshape.x -= 300;

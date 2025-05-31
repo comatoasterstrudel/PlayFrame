@@ -29,10 +29,16 @@ var failed:Bool = false;
 
 var shakeTween:FlxTween;
 
+var amountofinputs:Int = 4;
+
 function create(){
     PlayState.wonMicrogame = false;
 
-    for(i in 0...4){
+    if(PlayState.harder){
+        amountofinputs = 5;    
+    }
+    
+    for(i in 0...amountofinputs){
         buttonsToPress.push(FlxG.random.int(0,3));
     }
     
@@ -124,12 +130,12 @@ function create(){
     
     new FlxTimer().start(.5 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
     {
-        for(i in 0...4){
-            new FlxTimer().start((.7 * i) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+        for(i in 0...amountofinputs){
+            new FlxTimer().start(((PlayState.harder ? .6 : .7) * i) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
             {
                 cpuPress(buttonsToPress[i]);
                 
-                if(i == 3){
+                if(i == amountofinputs - 1){
                     new FlxTimer().start((.5) * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
                     {
                         startYourTurn();
@@ -203,7 +209,7 @@ function update(elapsed:Float){
             if(buttonsToPress[progress] == i && !failed){
                 pressButton(buttons[i], true);
                 progress ++;
-                if(progress == 4){
+                if(progress == amountofinputs){
                     win();
                 }
             } else {

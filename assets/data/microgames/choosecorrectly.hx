@@ -12,6 +12,9 @@ var microgameOver:Bool = false;
 
 var left:Bool = false;
 
+var mysteryleft:FlxSprite;
+var mysteryright:FlxSprite;
+
 function create(){
     PlayState.wonMicrogame = false;
 
@@ -23,13 +26,17 @@ function create(){
     Utilities.centerSpriteOnPos(bg, frameWidth / 2, frameHeight / 2);
     microgameGroup.add(bg);
     
-    sign1 = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/' + (left ? 'goodsign' : 'badsign') + '.png');
+    var prefix:String = '';
+    
+    if(PlayState.harder) prefix = 'mystery_';
+    
+    sign1 = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/' + prefix + (left ? 'goodsign' : 'badsign') + '.png');
     sign1.scale.set(2, 2);
     sign1.antialiasing = false;
     Utilities.centerSpriteOnPos(sign1, frameWidth / 2, frameHeight / 2);
     microgameGroup.add(sign1);
 
-    sign2 = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/' + (left ? 'badsign' : 'goodsign') + '.png');
+    sign2 = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/' + prefix + (left ? 'badsign' : 'goodsign') + '.png');
     sign2.scale.set(2, 2);
     sign2.flipX = true;
     sign2.antialiasing = false;
@@ -58,6 +65,24 @@ function create(){
     arrows.updateHitbox();
     Utilities.centerSpriteOnPos(arrows, frameWidth / 2, frameHeight / 2);
     microgameGroup.add(arrows);
+    
+    if(PlayState.harder){
+        mysteryleft = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/mystery.png');
+        mysteryleft.scale.set(2,2);
+        mysteryleft.updateHitbox();
+        Utilities.centerSpriteOnPos(mysteryleft, frameWidth / 2, frameHeight / 2);
+        mysteryleft.x = 0;
+        mysteryleft.antialiasing = false;
+        microgameGroup.add(mysteryleft);
+
+        mysteryright = new FlxSprite().loadGraphic('assets/images/microgames/choosecorrectly/mystery.png');
+        mysteryright.scale.set(2,2);
+        mysteryright.updateHitbox();
+        Utilities.centerSpriteOnPos(mysteryright, frameWidth / 2, frameHeight / 2);
+        mysteryright.x = 640;
+        mysteryright.antialiasing = false;
+        microgameGroup.add(mysteryright);
+    }
 }
 
 function update(elapsed):Void{
@@ -126,4 +151,9 @@ function destroyMicrogame():Void{
     sign2.destroy();
     guy.destroy();
     arrows.destroy();
+    
+    if(PlayState.harder){
+        mysteryleft.destroy();
+        mysteryright.destroy();
+    }
 }

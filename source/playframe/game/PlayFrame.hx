@@ -20,7 +20,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     /**
      * how wide the frames should be
      */
-    public static final frameWidth:Int = 900;
+    public static var frameWidth:Int = 900;
     
     /**
      * how wide the gaps between the top anbd bottom should be
@@ -51,6 +51,9 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
 		FlxG.cameras.add(frameCamera, false);
         
         frameHeight = frameCamera.height;
+        
+        frameWidth += 1;
+        frameHeight += 1;
         
         topCamera = new FlxCamera((FlxG.width / 2 - frameWidth / 2) + positionOffset, PlayState.scoreBgHeight + frameMargin, frameWidth, (FlxG.height - PlayState.scoreBgHeight) - (frameMargin * 2));
 		topCamera.bgColor = FlxColor.TRANSPARENT;
@@ -107,7 +110,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
     
     var soundGroup:Array<FlxSound> = [];
     
-    function playSound(path:String, volume:Float):FlxSound{
+    public function playSound(path:String, volume:Float):FlxSound{
 		var sound:FlxSound = new FlxSound();
 		sound.loadEmbedded(path, false);
 		sound.volume = volume;
@@ -147,7 +150,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         
         var data = new MicrogameData(name);
         
-        var transprite = new FlxSprite().makeGraphic(frameWidth, frameHeight, data.color.getDarkened(.7));
+        var transprite = new FlxSprite().makeGraphic(frameWidth + 2, frameHeight, data.color.getDarkened(.7));
         transprite.x = -transprite.width;
         transprite.alpha = 0;
         transitionGroup.add(transprite);
@@ -162,7 +165,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         FlxTween.tween(text, {y: text.y - frameHeight}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.backOut});
 
         FlxTween.tween(transprite, {alpha: 1}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
-        FlxTween.tween(transprite, {x: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
+        FlxTween.tween(transprite, {x: -1}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});
         
         new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
         {

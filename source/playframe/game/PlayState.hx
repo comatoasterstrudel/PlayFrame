@@ -161,7 +161,11 @@ class PlayState extends FlxState
 	
 	var leaving:Bool = false;
 	
+	public static var harder:Bool = false;
+	
 	public static var practiceGame:String = '';
+	
+	var speeding:Bool = false;
 	
 	override public function create()
 	{		 
@@ -184,12 +188,17 @@ class PlayState extends FlxState
 			maxLives = 1;
 		}
 		
+		if(practiceGame == '') harder = false;
 		
 		curMicrogame = '';
 		curScore = 0;
 		speedUps = 0;
 		gameOver = false;
 		lostMicrogames = [];
+		
+		#if harder
+		harder = true;
+		#end
 		
 		bg = new FlxBackdrop('assets/images/bgtile.png', XY, 0, 0);
         add(bg);
@@ -322,6 +331,10 @@ class PlayState extends FlxState
 		}
 		
 		#if debug
+		if(FlxG.keys.justReleased.EIGHT){
+			speedUps ++;
+		}
+		
 		if(FlxG.keys.justReleased.SEVEN){
 			removeLife();
 		}
@@ -389,7 +402,11 @@ class PlayState extends FlxState
 						if(checkSpeedUp()){
 							new FlxTimer().start(2 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
 							{
-								increaseSpeed();
+								if(speedUps == 2 && !harder && practiceGame == ''){
+									increaseLevel();
+								} else {
+									increaseSpeed();									
+								}
 							});
 						}
 							
@@ -421,7 +438,7 @@ class PlayState extends FlxState
 
 		speedUps ++;
 		
-		speedSprite = new FlxSprite().loadGraphic( speedUps == 5 ? ('assets/images/speedupmax/' + curAvatar + '.png') : ('assets/images/speedup/' + curAvatar + '.png'));
+		speedSprite = new FlxSprite().loadGraphic( speedUps == 5 ? ('assets/images/popups/speedupmax/' + curAvatar + '.png') : ('assets/images/popups/speedup/' + curAvatar + '.png'));
 		speedSprite.camera = speedCam;
 		speedSprite.screenCenter();
 		speedSprite.x -= FlxG.width;
@@ -448,6 +465,51 @@ class PlayState extends FlxState
 		});
 	}
 	
+	function increaseLevel():Void{
+		speeding = true;
+		
+		harder = true;
+		
+		var data = new AvatarData(curAvatar);
+		
+		var thing = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, data.color.getDarkened(.7));
+		thing.alpha = 0;
+		thing.camera = speedCam;
+		add(thing);
+		
+		speedSprite = new FlxSprite().loadGraphic('assets/images/popups/levelup/$curAvatar.png');
+		speedSprite.camera = speedCam;
+		speedSprite.screenCenter();
+		speedSprite.x -= FlxG.width;
+		add(speedSprite);
+		
+		FlxTween.tween(thing, {alpha: .8}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+		FlxTween.tween(speedSprite, {x: speedSprite.x + FlxG.width}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+
+		FlxG.sound.music.fadeOut(1 * PlayState.subtractiveSpeed, .1);
+		
+		new FlxTimer().start(4 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(thing, {alpha: 0}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut}); 
+			FlxTween.tween(speedSprite, {x: FlxG.width}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+
+			FlxG.sound.music.fadeIn(1 * PlayState.subtractiveSpeed, .1, .3);
+					
+			speeding = false;
+
+			new FlxTimer().start(1 * PlayState.subtractiveSpeed, function(tmr:FlxTimer)
+			{
+				if(speedTween != null && speedTween.active){
+					speedTween.cancel();
+					speedTween.destroy();
+				}
+				thing.destroy();
+				speedSprite.destroy();
+				speedSprite = null;
+			});
+		});
+	}
+
 	public static function checkSpeedUp():Bool{
 		return speedUps < 5 && wonMicrogame && curScore % 5 == 0;
 	}
@@ -607,6 +669,10 @@ class PlayState extends FlxState
 			
 			if(BeatManager.globalCurBeat % 2 == 0){
 				speedTween = FlxTween.tween(speedSprite.scale, {x: subtractiveSpeed, y: additiveSpeed}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
+				
+				if(speeding){
+					playFrame.playSound('assets/sounds/scare.ogg', .4);
+				}
 			} else {
 				speedTween = FlxTween.tween(speedSprite.scale, {x: additiveSpeed, y: subtractiveSpeed}, 1 * PlayState.subtractiveSpeed, {ease: FlxEase.quartOut});   
 			}

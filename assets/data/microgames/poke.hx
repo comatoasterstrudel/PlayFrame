@@ -18,6 +18,10 @@ var squishing:Bool = false;
 function create(){
     PlayState.wonMicrogame = false;
 
+    if(PlayState.harder){
+        maxPokeCount = 11;
+    }
+            
     bg = new FlxSprite().makeGraphic(frameWidth, frameHeight);
     microgameGroup.add(bg);
     
