@@ -66,7 +66,9 @@ function update(elapsed:Float):Void{
                     playSound('assets/sounds/keyClick' + FlxG.random.int(1,8) + '.ogg', 1);
                     
                     buttons[i].y += 20;
-                    FlxTween.tween(buttons[i], {y: 0}, .5, {ease: FlxEase.quartOut});    
+                    FlxTween.tween(buttons[i], {y: 0}, .5, {ease: FlxEase.quartOut}); 
+                    
+                    buttons[i].color = 0xFF8294FF;
                 }
             }   
         }

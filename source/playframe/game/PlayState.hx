@@ -279,7 +279,7 @@ class PlayState extends FlxState
 				startMicrogame(pickMicrogame());
 			});	
 		} else {
-			new FlxTimer().start(2.7, function(tmr:FlxTimer)
+			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				dia.startDialogue('intro', function():Void{
 					tutorialLevel ++;

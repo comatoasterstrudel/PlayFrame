@@ -194,26 +194,23 @@ class MainMenuState extends FlxState
 								dia.destroy();
 							});
 						} else {
-							var dia = new DialogueBox();
-							add(dia);
 							canSelect = false;
-							dia.startDialogue('test', function():Void{
-								var tran = new ShapeTransition('out', .5);
-								tran.camera = topCam;
-								add(tran);
-								
-								if(FlxG.sound.music != null){
-									FlxG.sound.music.fadeOut(0.5, 0);
-								}
-								
-								PlayState.practiceGame = '';
+							
+							var tran = new ShapeTransition('out', .5);
+							tran.camera = topCam;
+							add(tran);
+							
+							if(FlxG.sound.music != null){
+								FlxG.sound.music.fadeOut(0.5, 0);
+							}
+							
+							PlayState.practiceGame = '';
 
-								PlayState.isTutorial = true;
-								
-								new FlxTimer().start(.5, function(tmr:FlxTimer){
-									FlxG.switchState(new PlayState());
-								});
-							});	
+							PlayState.isTutorial = true;
+							
+							new FlxTimer().start(.5, function(tmr:FlxTimer){
+								FlxG.switchState(new PlayState());
+							});
 						}
 					case 'leave':
 						Sys.exit(1);
