@@ -186,7 +186,9 @@ class PlayState extends FlxState
 		tutorialLevel = 0;
 		advanceTutorial = false;
 		
+		#if windows
 		DiscordClient.changePresence('Welcome To The VIDEOGAME', null);
+		#end
 
 		preloadThings();
 		fillMicrogames();
@@ -416,7 +418,9 @@ class PlayState extends FlxState
 		
 		var data = new MicrogameData(name);
 		
+		#if windows
 		DiscordClient.changePresence(data.text, null);
+		#end
 
 		playFrame.startMicroGame(name);
 		
@@ -530,7 +534,9 @@ class PlayState extends FlxState
 	}
 	
 	function increaseSpeed():Void{
+		#if windows
 		DiscordClient.changePresence(speedUps == 5 ? 'MAX SPEED!!' : 'SPEED UP!!', null);
+		#end
 
 		if(curAvatar == 'gerbo'){
 			updateSpeed(.1);	
@@ -577,7 +583,9 @@ class PlayState extends FlxState
 	}
 	
 	function increaseLevel():Void{
+		#if windows
 		DiscordClient.changePresence('LEVEL UP!!', null);
+		#end
 		
 		speeding = true;
 		

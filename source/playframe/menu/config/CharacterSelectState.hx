@@ -76,7 +76,7 @@ class CharacterSelectState extends FlxSubState
 		add(namePlate);
 		
 		abilityText = new FlxText();
-        abilityText.setFormat('assets/fonts/Andy.ttf', 40, 0xFFFFFF, CENTER); 
+        abilityText.setFormat(Utilities.font, 40, 0xFFFFFF, CENTER); 
 		abilityText.screenCenter();
 		add(abilityText);
 		

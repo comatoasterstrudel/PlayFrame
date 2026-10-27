@@ -26,7 +26,7 @@ class GameOverSubstate extends FlxSubState
         add(bg);
         
         text = new FlxText();
-        text.setFormat('assets/fonts/Andy.ttf', 45, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
+        text.setFormat(Utilities.font, 45, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
 		text.text = 'Final Score - ' + PlayState.curScore + '\nFinal Speed - x' + PlayState.finalSpeed + ' (' + PlayState.speedUps + (PlayState.speedUps == 1 ? ' speed up)\n\nFailed Microgames:' : ' speed ups) \n\nFailed Microgames:');
         for(i in PlayState.lostMicrogames){
             var data = new MicrogameData(i);
@@ -40,20 +40,24 @@ class GameOverSubstate extends FlxSubState
         
 
         if(PlayState.curScore > SaveData.highscores.get(PlayState.curAvatar) && PlayState.practiceGame == ''){
+            #if windows
             DiscordClient.changePresence('Game Over.. (New Highscore!)', null);
+            #end
 
             trace('New Highscore! ' + PlayState.curScore);  
             
             SaveData.highscores.set(PlayState.curAvatar, PlayState.curScore);
             SaveData.save();
             
-            textbox = new Textbox(0, 0, {fontSize: 50, font: 'assets/fonts/andy.ttf', charactersPerSecond: 15});
+            textbox = new Textbox(0, 0, {fontSize: 50, font: Utilities.font, charactersPerSecond: 15});
             textbox.setText('@011001500@03331640ANEW  HIGHSCORE!!@010@030');
             textbox.bring();
             textbox.camera = theCam;
             add(textbox);
         } else {
+            #if windows
             DiscordClient.changePresence('Game Over..', null);
+            #end
         }
             
         char = new FlxSprite().loadGraphic('assets/images/gameover/' + PlayState.curAvatar + '.png');

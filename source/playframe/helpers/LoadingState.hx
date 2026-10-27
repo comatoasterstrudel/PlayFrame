@@ -10,7 +10,15 @@ class LoadingState extends FlxState
         SaveData.init();
 		SaveData.load();
         
+        #if html5 
+        FlxG.switchState(new MainMenuState());    
+        return;
+        #end
+        
+
+        #if windows
         DiscordClient.changePresence('Loading', null);
+        #end
 
         var loader = new FlxSprite().loadGraphic('assets/images/load/' + (PlayState.curAvatar == 'illbert' ? 'loadill' : 'load') + '.png');
         loader.screenCenter();

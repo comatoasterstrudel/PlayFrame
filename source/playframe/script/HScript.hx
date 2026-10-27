@@ -63,7 +63,7 @@ class HScript extends HaxeScript
 			var haxeExts = ["hx", "hsc", "hscript"];
 			for (ext in haxeExts)
 			{
-				if (FileSystem.exists('$paath.$ext'))
+				if (Assets.exists('$paath.$ext'))
 				{
 					paath = '$paath.$ext';
 					fileName += '.$ext';

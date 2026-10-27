@@ -65,14 +65,14 @@ class PracticeState extends FlxSubState
 
 			var text:PracticeText = new PracticeText(0, 0, data.text);
 			text.screenCenter(X);
-			text.setFormat('assets/fonts/Andy.ttf', 50, FlxColor.WHITE, CENTER);
+			text.setFormat(Utilities.font, 50, FlxColor.WHITE, CENTER);
 			text.ID = i;
 			text.color = data.color.getLightened(.6);
 			optionTexts.add(text);
 			
 			var text2:SmallPracticeText = new SmallPracticeText('FT. ' + data.author, text);
 			text2.screenCenter(X);
-			text2.setFormat('assets/fonts/Andy.ttf', 25, FlxColor.WHITE, CENTER);
+			text2.setFormat(Utilities.font, 25, FlxColor.WHITE, CENTER);
 			text2.ID = i;
 			text2.color = data.color.getLightened(.3);
 			add(text2);
@@ -84,7 +84,7 @@ class PracticeState extends FlxSubState
 		
 		hardmode = new FlxText(0, 0, 'lala');
 		hardmode.screenCenter(X);
-		hardmode.setFormat('assets/fonts/Andy.ttf', 50, FlxColor.WHITE, CENTER);
+		hardmode.setFormat(Utilities.font, 50, FlxColor.WHITE, CENTER);
 		add(hardmode);
 		
         changeSelection();

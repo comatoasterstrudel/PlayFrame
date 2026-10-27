@@ -52,7 +52,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite>
         add(dialogueboxdeco);
 
         dialoguetext = new FlxTypeText(0,0, Std.int(dialoguebox.width * .5),"hi :-) this is a test.. what if i type too long? will it go down a line?", 54);
-		dialoguetext.setFormat('assets/fonts/andy.ttf', 50, FlxColor.WHITE, CENTER);
+		dialoguetext.setFormat(Utilities.font, 50, FlxColor.WHITE, CENTER);
 		dialoguetext.screenCenter();
 		dialoguetext.antialiasing = true;
 		add(dialoguetext);
@@ -147,7 +147,7 @@ class DialogueBox extends FlxTypedGroup<FlxSprite>
     }
 
     function updatecolors():Void{
-        dialoguetext.setFormat('assets/fonts/andy.ttf', 50, FlxColor.WHITE, CENTER);
+        dialoguetext.setFormat(Utilities.font, 50, FlxColor.WHITE, CENTER);
 
         dialogueboxdeco.loadGraphic('assets/images/dia/deco_' + thedata[progress][5] + '.png');
         dialogueboxdeco.scale.y = .65;

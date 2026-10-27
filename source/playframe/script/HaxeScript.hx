@@ -34,7 +34,7 @@ class HaxeScript
 	public static function create(filePath:String):HaxeScript
 	{
 		var path = filePath;
-		if (FileSystem.exists(path))
+		if (Assets.exists(path))
 		{
 			return new HScript();
 		}

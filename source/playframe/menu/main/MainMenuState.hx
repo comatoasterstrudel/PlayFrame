@@ -22,7 +22,16 @@ class MainMenuState extends FlxState
 	
 	public static var canSelect:Bool = true;
 	
-	var options:Array<String> = ['play', 'config', 'scores', 'practice', 'tutorial', 'leave'];
+	var options:Array<String> = [
+		'play',
+		'config',
+		'scores',
+		'practice',
+		'tutorial'
+		#if windows
+		, 'leave'
+		#end
+	];
 	
 	var buttons:FlxTypedGroup<MainMenuButton>;
 	
@@ -53,8 +62,10 @@ class MainMenuState extends FlxState
 	{		 
 		super.create();
 		
+		#if windows
 		DiscordClient.changePresence('In the Menus', null);
-		
+		#end
+
 		refresh = false;
 		
 		persistentUpdate = true;
@@ -212,8 +223,10 @@ class MainMenuState extends FlxState
 								FlxG.switchState(new PlayState());
 							});
 						}
+					#if windows
 					case 'leave':
 						Sys.exit(1);
+					#end
 				}
 			}	
 			
@@ -328,7 +341,7 @@ class MainMenuState extends FlxState
 		FlxTween.tween(newsCamera, {y: FlxG.height - 100}, 1.4);
 				
 		newsText = new FlxText();
-        newsText.setFormat('assets/fonts/Andy.ttf', 70, FlxColor.WHITE);
+        newsText.setFormat(Utilities.font, 70, FlxColor.WHITE);
 		newsText.camera = newsCamera;
 		newsText.screenCenter(X);
 		newsText.y = 20;

@@ -11,7 +11,7 @@ class MicrogameData
 	public var author:String = '';
 
 	public function new(dataname:String){
-		data = Json.parse(File.getContent('assets/data/microgames/' + dataname + '.json'));
+		data = Json.parse(Assets.getText('assets/data/microgames/' + dataname + '.json'));
 
 		name = data.name;
 		text = data.text;

@@ -15,8 +15,10 @@ class Main extends Sprite
 		
 		FlxG.mouse.visible = false;
 		
+		#if windows
 		DiscordClient.initialize();
 		DiscordClient.changePresence('Having fun and playing with my friends', 'Having fun and playing with my friends', 'Having fun and playing with my friends');
+		#end
 		
 		FlxSprite.defaultAntialiasing = true;
 	}

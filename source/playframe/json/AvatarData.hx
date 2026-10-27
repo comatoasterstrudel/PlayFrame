@@ -9,7 +9,7 @@ class AvatarData
 	public var abilityText:String = '';
 	
 	public function new(dataname:String){
-		data = Json.parse(File.getContent('assets/data/avatars/' + dataname + '.json'));
+		data = Json.parse(Assets.getText('assets/data/avatars/' + dataname + '.json'));
 
 		name = data.name;
 		color = FlxColor.fromRGB(data.color[0], data.color[1], data.color[2]);

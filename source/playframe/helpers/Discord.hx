@@ -1,3 +1,4 @@
+#if windows
 package playframe.helpers;
 
 /**
@@ -79,3 +80,4 @@ class DiscordClient
 		});
 	}
 }
+#end

@@ -103,8 +103,9 @@ class ScriptSupport {
 		try
 		{
 			#if sys
-			ast = parser.parseString(sys.io.File.getContent(path));
+			ast = parser.parseString(sys.io.File.getContent(path)); // why didnt this work on html5 before anyway
 			#else
+			ast = parser.parseString(Assets.getText(path));
 			trace("No sys support detected.");
 			#end
 		}

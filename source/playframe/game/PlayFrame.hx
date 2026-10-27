@@ -177,7 +177,7 @@ class PlayFrame extends FlxTypedGroup<FlxTypedGroup<FlxSprite>>
         transitionGroup.add(transprite);
         
         var text = new FlxText();
-        text.setFormat('assets/fonts/Andy.ttf', 70, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
+        text.setFormat(Utilities.font, 70, data.color.getLightened(.2), CENTER, FlxTextBorderStyle.SHADOW, data.color.getDarkened(.2));
 		text.text = data.text;
 		Utilities.centerSpriteOnPos(text, frameWidth / 2, frameHeight / 2);
 		transitionGroup.add(text);
